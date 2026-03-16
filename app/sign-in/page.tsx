@@ -1,5 +1,7 @@
 import AuthSplitLayout from "@/components/auth-split-layout";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
 export default function SignInPage() {
@@ -11,36 +13,34 @@ export default function SignInPage() {
       footerHref="/sign-up"
       footerLinkLabel="Sign up"
     >
-      <form className="space-y-4">
+      <form className="space-y-5">
         <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-medium">
+          <Label htmlFor="email">
             Email
-          </label>
-          <input
+          </Label>
+          <Input
             id="email"
             name="email"
             type="email"
             autoComplete="email"
             placeholder="you@example.com"
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none transition focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40"
           />
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="password" className="text-sm font-medium">
+          <Label htmlFor="password">
             Password
-          </label>
-          <input
+          </Label>
+          <Input
             id="password"
             name="password"
             type="password"
             autoComplete="current-password"
             placeholder="Enter your password"
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none transition focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40"
           />
         </div>
 
-        <div className="text-right">
+        <div className="flex justify-end">
           <Link
             href="/forgot-password"
             className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
@@ -49,7 +49,7 @@ export default function SignInPage() {
           </Link>
         </div>
 
-        <Button type="submit" className="w-full">
+        <Button type="submit" size="lg" className="w-full rounded-xl">
           Sign in
         </Button>
       </form>
