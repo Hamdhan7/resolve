@@ -4,7 +4,6 @@ import {
   Bot,
   CheckCircle2,
   Globe2,
-  Headphones,
   LayoutDashboard,
   MessageSquareText,
   PhoneCall,
@@ -12,7 +11,8 @@ import {
   Wifi,
 } from "lucide-react";
 
-import ThemeToggler from "@/components/theme-toggler";
+import Footer from "@/components/layout/footer";
+import Navbar from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -77,29 +77,7 @@ const figurePalette = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
-          <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-2xl bg-primary/15 text-primary">
-              <Headphones className="size-5" />
-            </div>
-            <div>
-              <p className="text-lg font-extrabold tracking-tight">OneHelp</p>
-              <p className="text-xs text-muted-foreground">AI complaint management</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 sm:gap-3">
-            <ThemeToggler className="hidden sm:inline-flex" />
-            <Button asChild variant="ghost" className="rounded-xl">
-              <Link href="/sign-in">Log in</Link>
-            </Button>
-            <Button asChild className="rounded-xl px-5">
-              <Link href="/sign-up">Sign up</Link>
-            </Button>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       <section className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,249,250,0.76)_0%,rgba(240,244,255,0.9)_100%)] dark:bg-[linear-gradient(180deg,rgba(35,40,60,0.72)_0%,rgba(26,35,64,0.96)_100%)]">
         <div className="mx-auto max-w-7xl px-6 pt-16 lg:px-10 lg:pt-20">
@@ -210,7 +188,7 @@ export default function Home() {
                     <div className="mx-auto flex max-w-md items-center justify-center">
                       <div className="relative flex aspect-square w-44 items-center justify-center rounded-full bg-blue-900 text-white sm:w-52">
                         <span className="text-lg font-bold">OneHelp</span>
-                        {orbitNodeClasses.map((nodeClass, index) => (
+                        {orbitNodeClasses.map((nodeClass) => (
                           <div
                             key={nodeClass}
                             className={`absolute ${nodeClass} flex size-7 items-center justify-center rounded-full border border-slate-200 bg-white shadow-sm`}
@@ -315,22 +293,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-slate-900 py-7 text-slate-300 dark:bg-slate-950">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 text-sm sm:flex-row sm:items-center sm:justify-between lg:px-10">
-          <span>© 2077 OneHelp. All rights reserved.</span>
-          <div className="flex gap-6 text-slate-400">
-            <Link href="#" className="transition-colors hover:text-white">
-              Terms
-            </Link>
-            <Link href="#" className="transition-colors hover:text-white">
-              Privacy
-            </Link>
-            <Link href="#" className="transition-colors hover:text-white">
-              Cookies
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
