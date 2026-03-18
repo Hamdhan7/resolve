@@ -74,18 +74,34 @@ const figurePalette = [
   { head: "bg-stone-400", body: "bg-emerald-600" },
 ] as const;
 
+type NavbarProps = {
+  rightContent?: React.ReactNode;
+};
+
+const rightContent = () => {
+  return (
+    <>
+      <Button asChild variant="ghost" className="rounded-sm">
+        <Link href="/sign-in" className="text-[#667085] ">
+          Log in
+        </Link>
+      </Button>
+      <Button asChild className="rounded-sm px-5 text-white bg-[#122841]">
+        <Link href="/sign-up">Sign up</Link>
+      </Button>
+    </>
+  );
+};
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Navbar />
+      <Navbar rightContent={rightContent()} />
 
       <section className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,249,250,0.76)_0%,rgba(240,244,255,0.9)_100%)] dark:bg-[linear-gradient(180deg,rgba(35,40,60,0.72)_0%,rgba(26,35,64,0.96)_100%)]">
         <div className="mx-auto max-w-7xl px-6 pt-16 lg:px-10 lg:pt-20">
           <div className="mx-auto max-w-4xl text-center">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-4 py-2 text-sm text-muted-foreground shadow-sm backdrop-blur">
-              <Bot className="size-4 text-primary" />
-              AI-powered help for Sri Lankan telecom support
-            </div>
+           
 
             <h1 className="text-balance text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl lg:leading-[1.1]">
               No More Waiting on Hold.
@@ -94,15 +110,21 @@ export default function Home() {
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-              Report internet issues, billing disputes, and signal drops for Dialog,
-              SLT, Mobitel, and Hutch instantly using our multilingual AI assistant.
+              Report internet issues, billing disputes, and signal drops for
+              Dialog, SLT, Mobitel, and Hutch instantly using our multilingual
+              AI assistant.
             </p>
 
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button asChild variant="outline" size="lg" className="min-w-56 rounded-xl">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="min-w-56 rounded-sm hover:text-white"
+              >
                 <Link href="/sign-in">Check Existing Ticket</Link>
               </Button>
-              <Button asChild size="lg" className="min-w-56 rounded-xl">
+              <Button asChild size="lg" className="min-w-56 rounded-sm ">
                 <Link href="/sign-up">
                   Start Complaint Assistant
                   <ArrowRight className="size-4" />
@@ -207,9 +229,14 @@ export default function Home() {
 
                 <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-4">
                   {figurePalette.map((person, index) => (
-                    <div key={index} className="flex flex-col items-center justify-end gap-2">
+                    <div
+                      key={index}
+                      className="flex flex-col items-center justify-end gap-2"
+                    >
                       <div className={`size-10 rounded-full ${person.head}`} />
-                      <div className={`h-14 w-10 rounded-t-full ${person.body}`} />
+                      <div
+                        className={`h-14 w-10 rounded-t-full ${person.body}`}
+                      />
                     </div>
                   ))}
                 </div>
@@ -257,7 +284,9 @@ export default function Home() {
                 key={provider.name}
                 className="rounded-2xl border border-border/60 bg-card px-5 py-4 shadow-sm"
               >
-                <span className={`text-2xl font-extrabold tracking-wide ${provider.className}`}>
+                <span
+                  className={`text-2xl font-extrabold tracking-wide ${provider.className}`}
+                >
                   {provider.name}
                 </span>
               </div>

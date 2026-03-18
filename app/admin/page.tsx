@@ -2,6 +2,7 @@ import DataTable, { DataTableColumn } from "@/components/data-table";
 import Footer from "@/components/layout/footer";
 import Navbar from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
+import { CircleUserRound } from "lucide-react";
 
 type CompanyRequestRow = {
     companyName: string;
@@ -88,7 +89,16 @@ const columns: DataTableColumn<CompanyRequestRow>[] = [
 export default function AdminPage() {
     return (
         <main className="flex min-h-screen flex-col bg-background text-foreground">
-            <Navbar />
+            <Navbar
+                rightContent={
+                    <div className="flex items-center gap-2 sm:gap-3">
+                        <Button variant="outline" className="rounded-sm">
+                            <CircleUserRound className="size-4" />
+                            Admin Profile
+                        </Button>
+                    </div>
+                }
+            />
 
             <section className="mx-auto w-full max-w-7xl flex-1 px-6 py-10 lg:px-10">
                 <div className="space-y-1">
