@@ -1,9 +1,359 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Mic, Send, ChevronLeft, ImagePlus } from "lucide-react";
+
+interface Message {
+  id: string;
+  role: "user" | "assistant";
+  text: string;
+  time: string;
+  isTicketDraft?: boolean;
+  ticketData?: any;
+  ticketConfirmed?: boolean;
+}
 
 export default function CustomerPage() {
+    const [mode, setMode] = useState<"assistant" | "manual">("assistant");
+    
+    // Chat State
+    const [sessionId, setSessionId] = useState("");
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [input, setInput] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    // Initial load
+    useEffect(() => {
+        setSessionId(Math.random().toString(36).substring(2, 10));
+        setMessages([
+            {
+                id: "initial",
+                role: "assistant",
+                text: "Hi! I am the OneHelp Assistant. Please tell me about the issue you are facing today, so I can help route it to the correct provider.",
+                time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+            }
+        ]);
+    }, [mode]); 
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages, isLoading]);
+
+    const sendMessage = async () => {
+        if (!input.trim() || isLoading) return;
+        const userMsg = input.trim();
+        setInput("");
+        
+        const newMessage: Message = { id: Date.now().toString(), role: "user", text: userMsg, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) };
+        setMessages(prev => [...prev, newMessage]);
+        setIsLoading(true);
+        
+        try {
+            // Pointing directly to your Python FastAPI backend
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+            const res = await fetch(`${apiUrl}/chat/message`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ session_id: sessionId, message: userMsg })
+            });
+            
+            if (!res.ok) throw new Error("API error");
+            const data = await res.json();
+            
+            const assistantMsg: Message = {
+               id: Date.now().toString() + "_ai",
+               role: "assistant", 
+               text: data.reply || "I understand. Let me help you with that.",
+               time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+               isTicketDraft: data.is_complete,
+               ticketData: data.ticket_draft
+            };
+            setMessages(prev => [...prev, assistantMsg]);
+
+        } catch (err) {
+            console.error("Chat API Error:", err);
+            // Mock response behavior if backend is unavailable testing-wise
+            setTimeout(() => {
+                setMessages(prev => [...prev, {
+                    id: Date.now().toString() + "_error_mock",
+                    role: "assistant", 
+                    text: "[Mock] Backend not reachable. I recorded: " + userMsg,
+                    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                }]);
+                setIsLoading(false);
+            }, 800);
+            return;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const confirmTicket = async (ticketData: any, messageId: string) => {
+        setIsLoading(true);
+        const verifyMsg: Message = { id: Date.now().toString(), role: "user", text: "Yes, please create it.", time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) };
+        setMessages(prev => [...prev.map(m => m.id === messageId ? { ...m, ticketConfirmed: true } : m), verifyMsg]);
+
+        try {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+            const payload = { vendor_id: ticketData.vendor_id || "00000000-0000-0000-0000-000000000000", issue_data: ticketData };
+            
+            const res = await fetch(`${apiUrl}/tickets`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) throw new Error("API error");
+            const data = await res.json();
+
+            setMessages(prev => [...prev, {
+                id: Date.now().toString() + "_conf",
+                role: "assistant", 
+                text: `Done! Ticket #${data.id || "NET-404"} has been created successfully. A technical team has been alerted.`,
+                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            }]);
+
+        } catch (err) {
+             console.error("Ticket API Error:", err);
+            // Mock Ticket Creation Fallback
+             setTimeout(() => {
+                 setMessages(prev => [...prev, {
+                     id: Date.now().toString() + "_mock_conf",
+                     role: "assistant", 
+                     text: `[Mock] Ticket #NET-TEST created successfully.`,
+                     time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                 }]);
+                 setIsLoading(false);
+             }, 800);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
-        <div>
-            <h1>Customer Page</h1>
+        <div className="flex flex-col h-screen bg-slate-50/20 font-sans text-slate-900">
+           {/* Header */}
+           <header className="flex items-center justify-between px-8 py-4 bg-white shrink-0 shadow-sm border-b border-slate-100 z-10">
+               <div className="text-[22px] font-bold text-[#1a202c] tracking-tight">OneHelp</div>
+               <div className="flex items-center gap-3">
+                   <span className="text-[15px] font-medium text-slate-600">Shajanthan</span>
+                   <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden flex-shrink-0 border border-slate-200">
+                       <img src="https://github.com/shadcn.png" alt="Avatar" className="w-full h-full object-cover" />
+                   </div>
+               </div>
+           </header>
+           
+           <main className="flex-1 flex flex-col px-4 pb-8 w-full max-w-[1050px] mx-auto min-h-0">
+               
+               {/* Controls Bar */}
+               <div className="flex items-center justify-between w-full mb-6 mt-4 shrink-0 px-2 lg:px-0">
+                   <div className="flex-1 flex items-center">
+                       {mode === "manual" && (
+                           <button onClick={() => setMode("assistant")} className="flex items-center text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors">
+                               <ChevronLeft className="h-4 w-4 mr-1" /> Create Manual Ticket
+                           </button>
+                       )}
+                   </div>
+                   
+                   <div className="flex items-center bg-white border border-slate-200 p-1 rounded-lg shadow-sm">
+                       <button 
+                           onClick={() => setMode("assistant")}
+                           className={`px-6 py-1.5 text-sm font-medium rounded-md shadow-sm transition-colors ${mode === "assistant" ? "bg-[#1a202c] text-white" : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"}`}
+                       >
+                           Assistant
+                       </button>
+                       <button 
+                           onClick={() => setMode("manual")}
+                           className={`px-6 py-1.5 text-sm font-medium rounded-md shadow-sm transition-colors ${mode === "manual" ? "bg-[#1a202c] text-white" : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"}`}
+                       >
+                           Manual
+                       </button>
+                   </div>
+
+                   <div className="flex-1 flex justify-end">
+                       <Button variant="outline" className="text-sm font-medium border-slate-200 text-slate-700 shadow-[0_1px_2px_rgba(0,0,0,0.05)] rounded-lg h-9">View my tickets</Button>
+                   </div>
+               </div>
+
+               {/* Conditional Content */}
+               {mode === "assistant" ? (
+                   // --- Chat Interface ---
+                   <div className="w-full flex-1 bg-white border border-blue-200/70 rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-[0_2px_15px_rgba(0,0,0,0.02)]">
+                       {/* Messages Area */}
+                       <div className="flex-1 overflow-y-auto px-6 py-8 space-y-8 scroll-smooth bg-[#fafcff]">
+                           {messages.map((msg) => (
+                               <div key={msg.id} className={`flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}>
+                                   <div className={`flex items-center justify-between mb-1.5 w-full max-w-[460px] ${msg.role === "user" ? "pl-4" : ""}`}>
+                                       <span className="text-[11px] font-semibold text-slate-500">{msg.role === "user" ? "You" : "OneHelp Assistant"}</span>
+                                       <span className="text-[10px] text-slate-400 font-medium">{msg.time}</span>
+                                   </div>
+                                   <div className={`text-[14.5px] p-4 rounded-2xl max-w-[460px] leading-relaxed shadow-sm w-fit ${
+                                           msg.role === "user" 
+                                           ? "bg-[#454550] text-white rounded-tr-sm" 
+                                           : "bg-white border border-slate-100 text-[#334155] rounded-tl-sm shadow-[0_2px_10px_rgba(0,0,0,0.02)]"
+                                       }`}>
+                                       {msg.text && <div className="mb-2 whitespace-pre-wrap">{msg.text}</div>}
+                                       
+                                       {/* Ticket Draft Rendering */}
+                                       {msg.isTicketDraft && msg.ticketData && (
+                                           <div className="mt-4 bg-slate-50 p-4 rounded-xl border border-slate-100/80">
+                                               <div className="space-y-3 mb-5 text-[14px]">
+                                                   <div className="flex"><span className="font-semibold w-[100px] text-slate-800">Provider:</span> <span className="text-slate-700">{msg.ticketData.vendor || "N/A"}</span></div>
+                                                   <div className="flex"><span className="font-semibold w-[100px] text-slate-800">Connection ID:</span> <span className="text-slate-700">{msg.ticketData.connection_number || "N/A"}</span></div>
+                                                   <div className="flex"><span className="font-semibold w-[100px] text-slate-800">Issue:</span> <span className="text-slate-700">{msg.ticketData.issue_summary || "N/A"}</span></div>
+                                                   <div className="flex"><span className="font-semibold w-[100px] text-slate-800">Category:</span> <span className="text-slate-700">{msg.ticketData.category || "N/A"}</span></div>
+                                               </div>
+                                               {!msg.ticketConfirmed && (
+                                                   <Button 
+                                                        onClick={() => confirmTicket(msg.ticketData, msg.id)} 
+                                                        className="w-full bg-[#1a202c] hover:bg-slate-800 text-white shadow-sm font-medium py-2 h-auto text-[13.5px]"
+                                                    >
+                                                        Confirm & Create Ticket
+                                                   </Button>
+                                               )}
+                                           </div>
+                                       )}
+                                   </div>
+                               </div>
+                           ))}
+                           
+                           {isLoading && (
+                               <div className="flex flex-col items-start">
+                                   <div className="flex items-center justify-between mb-1.5 w-full max-w-[420px]">
+                                       <span className="text-[11px] font-semibold text-slate-500">OneHelp Assistant</span>
+                                   </div>
+                                   <div className="bg-white border border-slate-100 px-5 py-4 rounded-2xl rounded-tl-sm w-fit shadow-sm flex items-center gap-1.5">
+                                      <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                      <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                      <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                   </div>
+                               </div>
+                           )}
+                           <div ref={messagesEndRef} />
+                       </div>
+
+                       {/* Input Area */}
+                       <div className="p-4 bg-white mt-auto border-t border-blue-50">
+                           <div className="flex items-center gap-2 w-full border border-slate-200 rounded-[12px] p-1.5 px-3 focus-within:ring-4 focus-within:ring-blue-50 focus-within:border-blue-300 transition-all bg-white relative shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                               <Input 
+                                   value={input}
+                                   onChange={(e) => setInput(e.target.value)}
+                                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                                   placeholder="Send a message" 
+                                   className="flex-1 border-0 shadow-none focus-visible:ring-0 rounded-none h-11 px-1.5 text-[15px] placeholder:text-slate-400 font-medium text-slate-800"
+                                   disabled={isLoading}
+                               />
+                               <button className="p-2.5 text-slate-400 hover:text-slate-600 transition-colors rounded-full hover:bg-slate-50" aria-label="Voice input">
+                                   <Mic className="h-5 w-5" />
+                               </button>
+                               <Button onClick={sendMessage} disabled={isLoading || !input.trim()} size="icon" className="h-[40px] w-[44px] bg-[#1a202c] hover:bg-slate-800 disabled:opacity-50 disabled:bg-slate-400 shrink-0 rounded-[10px] ml-1 shadow-sm">
+                                   <Send className="h-[18px] w-[18px] text-white ml-0.5" />
+                               </Button>
+                           </div>
+                       </div>
+                   </div>
+               ) : (
+                   // --- Manual Ticket Form via SHADCN UI ---
+                   <div className="w-full flex-1 bg-white border border-slate-200 rounded-2xl overflow-y-auto shadow-sm pb-10">
+                       <div className="max-w-3xl mx-auto pt-10 px-8">
+                           <form className="space-y-7" onSubmit={(e) => e.preventDefault()}>
+                               
+                               <div className="space-y-2.5 flex flex-col">
+                                   <label className="text-sm font-semibold text-slate-700">Service Provider:</label>
+                                   <Select>
+                                      <SelectTrigger className="w-full bg-white h-11 text-[13.5px] border-slate-300 shadow-sm focus:ring-1 focus:ring-slate-400 font-medium text-slate-700">
+                                        <SelectValue placeholder="Select your service provider" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="slt_fibre">SLT Fibre</SelectItem>
+                                        <SelectItem value="dialog">Dialog</SelectItem>
+                                        <SelectItem value="mobitel">Mobitel</SelectItem>
+                                        <SelectItem value="hutch">Hutch</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                               </div>
+
+                               <div className="space-y-2.5">
+                                   <label className="text-sm font-semibold text-slate-700">Connection Number / Account ID:</label>
+                                   <Input 
+                                     placeholder="Enter your connection number" 
+                                     className="w-full border-slate-300 bg-white h-11 text-[13.5px] shadow-sm placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-slate-400 font-medium text-slate-700" 
+                                   />
+                               </div>
+                               
+                               <div className="space-y-2.5 flex flex-col">
+                                   <label className="text-sm font-semibold text-slate-700">Issue Category:</label>
+                                   <Select>
+                                      <SelectTrigger className="w-full bg-white h-11 text-[13.5px] border-slate-300 shadow-sm focus:ring-1 focus:ring-slate-400 font-medium text-slate-700">
+                                        <SelectValue placeholder="Select your issue category" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="internet">Internet Connectivity</SelectItem>
+                                        <SelectItem value="voice">Voice/Landline</SelectItem>
+                                        <SelectItem value="billing">Billing</SelectItem>
+                                        <SelectItem value="hardware">Router Hardware</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                               </div>
+
+                               <div className="space-y-4 pt-1">
+                                   <label className="text-sm font-semibold text-slate-700">Router Status:</label>
+                                   <RadioGroup defaultValue="normal" className="flex flex-wrap gap-8">
+                                        <div className="flex items-center space-x-3 cursor-pointer">
+                                            <RadioGroupItem value="normal" id="r1" className="border-slate-300 text-[#1a202c] focus:ring-[#1a202c] shadow-sm h-4 w-4" />
+                                            <label htmlFor="r1" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">Normal</label>
+                                        </div>
+                                        <div className="flex items-center space-x-3 cursor-pointer">
+                                            <RadioGroupItem value="los" id="r2" className="border-slate-300 text-[#1a202c] focus:ring-[#1a202c] shadow-sm h-4 w-4" />
+                                            <label htmlFor="r2" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">LOS Light Blinking Red</label>
+                                        </div>
+                                        <div className="flex items-center space-x-3 cursor-pointer">
+                                            <RadioGroupItem value="off" id="r3" className="border-slate-300 text-[#1a202c] focus:ring-[#1a202c] shadow-sm h-4 w-4" />
+                                            <label htmlFor="r3" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">All Lights Off</label>
+                                        </div>
+                                        <div className="flex items-center space-x-3 cursor-pointer">
+                                            <RadioGroupItem value="wifi" id="r4" className="border-slate-300 text-[#1a202c] focus:ring-[#1a202c] shadow-sm h-4 w-4" />
+                                            <label htmlFor="r4" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">WiFi Connected but No Internet</label>
+                                        </div>
+                                   </RadioGroup>
+                               </div>
+
+                               <div className="space-y-2.5 pt-2 flex flex-col">
+                                   <label className="text-sm font-semibold text-slate-700">Description:</label>
+                                   <Textarea 
+                                     rows={5} 
+                                     placeholder="Type your issue description" 
+                                     className="w-full border-slate-300 bg-white text-[13.5px] placeholder:text-slate-400 resize-none shadow-sm focus-visible:ring-1 focus-visible:ring-slate-400 mt-1 font-medium text-slate-700 p-3" 
+                                   />
+                               </div>
+                               
+                               <div className="space-y-2.5 pt-1 mt-6">
+                                   <label className="text-sm font-semibold text-slate-700">Attachment / Upload:</label>
+                                   <div className="w-full border-2 border-dashed border-slate-200 rounded-xl p-10 flex flex-col items-center justify-center bg-[#fafcff] cursor-pointer hover:bg-slate-50 hover:border-slate-300 transition-all">
+                                       <div className="bg-white p-3 rounded-full shadow-sm mb-4 border border-slate-100">
+                                           <ImagePlus strokeWidth={2.5} className="h-7 w-7 text-slate-400" />
+                                       </div>
+                                       <span className="text-[13.5px] font-semibold text-slate-600 mb-1">Upload screenshots of the error or router status</span>
+                                       <span className="text-xs text-slate-400 font-medium">(File Types: JPG, PNG only)</span>
+                                   </div>
+                               </div>
+
+                               <div className="pt-8 pb-4 flex justify-end gap-3 w-full">
+                                   <Button variant="outline" className="px-8 rounded-[6px] border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 shadow-sm font-semibold text-[13.5px] h-10 transition-colors">Cancel</Button>
+                                   <Button className="px-8 rounded-[6px] bg-[#1a202c] hover:bg-slate-800 text-white shadow-sm font-semibold text-[13.5px] h-10 transition-colors">Submit</Button>
+                               </div>
+
+                           </form>
+                       </div>
+                   </div>
+               )}
+           </main>
         </div>
     );
 }
