@@ -27,6 +27,7 @@ type DataTableProps<TData> = {
   rowActions?: (row: TData, rowIndex: number) => ReactNode;
   actionsHeader?: ReactNode;
   tableClassName?: string;
+  onRowClick?: (row: TData, rowIndex: number) => void;
 };
 
 function DataTable<TData>({
@@ -37,6 +38,7 @@ function DataTable<TData>({
   rowActions,
   actionsHeader = "Actions",
   tableClassName,
+  onRowClick,
 }: DataTableProps<TData>) {
   const totalColumns = columns.length + (rowActions ? 1 : 0);
 
@@ -63,7 +65,11 @@ function DataTable<TData>({
             </TableRow>
           ) : (
             data.map((row, rowIndex) => (
-              <TableRow key={getRowKey?.(row, rowIndex) ?? String(rowIndex)}>
+              <TableRow
+                key={getRowKey?.(row, rowIndex) ?? String(rowIndex)}
+                onClick={onRowClick ? () => onRowClick(row, rowIndex) : undefined}
+                className={cn(onRowClick ? "cursor-pointer" : undefined)}
+              >
                 {columns.map((column) => {
                   const cellContent =
                     column.cell?.(row, rowIndex) ??
