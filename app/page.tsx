@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Bot,
   CheckCircle2,
   Globe2,
   LayoutDashboard,
@@ -27,7 +26,7 @@ const features = [
     title: "Multilingual AI",
     description:
       "Speak comfortably in Sinhala, Tamil, or English. Our AI understands local nuances and technical terms perfectly.",
-    icon: Globe2,
+    icon: MessageSquareText,
   },
   {
     title: "Instant Ticketing",
@@ -50,12 +49,6 @@ const providers = [
   { name: "SLTMOBITEL", className: "text-blue-700" },
 ] as const;
 
-const supportPoints = [
-  { label: "Internet issues", icon: Wifi },
-  { label: "Billing disputes", icon: MessageSquareText },
-  { label: "Signal drops", icon: PhoneCall },
-] as const;
-
 const orbitNodeClasses = [
   "left-1/2 top-0 -translate-x-1/2",
   "right-8 top-8",
@@ -74,10 +67,6 @@ const figurePalette = [
   { head: "bg-stone-400", body: "bg-emerald-600" },
 ] as const;
 
-type NavbarProps = {
-  rightContent?: React.ReactNode;
-};
-
 const rightContent = () => {
   return (
     <>
@@ -95,14 +84,12 @@ const rightContent = () => {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-white text-foreground">
       <Navbar rightContent={rightContent()} />
 
-      <section className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,249,250,0.76)_0%,rgba(240,244,255,0.9)_100%)] dark:bg-[linear-gradient(180deg,rgba(35,40,60,0.72)_0%,rgba(26,35,64,0.96)_100%)]">
+      <section className="border-b border-border/60 bg-white">
         <div className="mx-auto max-w-7xl px-6 pt-16 lg:px-10 lg:pt-20">
           <div className="mx-auto max-w-4xl text-center">
-           
-
             <h1 className="text-balance text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl lg:leading-[1.1]">
               No More Waiting on Hold.
               <br />
@@ -134,7 +121,7 @@ export default function Home() {
           </div>
 
           <div className="mt-14 overflow-hidden rounded-t-[2.5rem] border border-border/50 bg-[linear-gradient(180deg,#f0f4ff_0%,#1a2340_65%)] shadow-2xl shadow-primary/10 dark:border-white/10">
-            <div className="relative min-h-[460px] px-4 pt-10 sm:px-8 lg:px-12">
+            <div className="relative min-h-115 px-4 pt-10 sm:px-8 lg:px-12">
               <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.45),transparent_60%)]" />
 
               <div className="absolute left-4 top-24 hidden w-40 space-y-4 xl:block">
@@ -203,7 +190,7 @@ export default function Home() {
                     </div>
                     <div className="absolute top-10 h-14 w-16 rounded-md bg-blue-500" />
                     <div className="absolute -left-4 top-12 h-3 w-10 rotate-[-20deg] rounded-full bg-orange-200" />
-                    <div className="absolute -right-3 top-14 h-3 w-8 rotate-[35deg] rounded-full bg-sky-200" />
+                    <div className="absolute -right-3 top-14 h-3 w-8 rotate-35 rounded-full bg-sky-200" />
                   </div>
 
                   <div className="relative mt-28 w-full rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-2xl shadow-slate-900/20 sm:p-6">
@@ -246,7 +233,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-background py-20">
+      <section className="bg-white py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="grid gap-6 md:grid-cols-3">
             {features.map((feature) => {
@@ -275,14 +262,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-t border-border/60 bg-background py-8">
-        <div className="mx-auto max-w-7xl px-6 text-center lg:px-10">
+      <section className="bg-white py-8">
+        <div className="mx-full max-w-full px-6 text-center lg:px-10">
           <p className="mb-10 text-lg text-muted-foreground">Compatible with</p>
           <div className="flex flex-wrap items-center justify-center gap-5 lg:gap-8">
             {providers.map((provider) => (
               <div
                 key={provider.name}
-                className="rounded-2xl border border-border/60 bg-card px-5 py-4 shadow-sm"
+                className="px-5 py-4"
               >
                 <span
                   className={`text-2xl font-extrabold tracking-wide ${provider.className}`}
@@ -292,33 +279,6 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="bg-background py-10">
-        <div className="mx-auto grid max-w-7xl gap-4 px-6 lg:grid-cols-3 lg:px-10">
-          {supportPoints.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <Card
-                key={item.label}
-                className="rounded-[1.75rem] border-border/60 bg-primary/5 shadow-none"
-              >
-                <CardContent className="flex items-center gap-4 p-5">
-                  <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/15 text-primary">
-                    <Icon className="size-6" />
-                  </div>
-                  <div>
-                    <p className="font-semibold">{item.label}</p>
-                    <p className="text-sm text-muted-foreground">
-                      Handled instantly by OneHelp AI.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
         </div>
       </section>
 
