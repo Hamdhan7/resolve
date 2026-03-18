@@ -160,6 +160,8 @@ export function getTicketByIdOrNo(ticketIdOrNo: string): Ticket | null {
     customer_name: customer?.full_name ?? "Customer",
     customer_phone: customer?.phone_number ?? "",
     customer_location: "Colombo, LK",
+    assigned_technician_id: ticket.assigned_technician_id ?? "unassigned",
+    assigned_technician_name: ticket.assigned_technician_name ?? "Unassigned",
   };
 }
 

@@ -117,10 +117,6 @@ export default function ProviderDashboardClient() {
     });
   }, [query, tickets, startDate, endDate]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [query, startDate, endDate]);
-
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = clamp(page, 1, totalPages);
   const pageData = useMemo(() => {
@@ -164,8 +160,13 @@ export default function ProviderDashboardClient() {
   async function onDelete(row: Ticket) {
     const ok = window.confirm(`Delete ticket ${row.ticket_no}?`);
     if (!ok) return;
-    await deleteTicket(row.id);
-    setTickets((prev) => prev.filter((t) => t.id !== row.id));
+    try {
+      await deleteTicket(row.id);
+      setTickets((prev) => prev.filter((t) => t.id !== row.id));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to delete ticket.";
+      window.alert(message);
+    }
   }
 
   return (
@@ -209,7 +210,10 @@ export default function ProviderDashboardClient() {
               <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setPage(1);
+                }}
                 placeholder="Search for trades"
                 className="pl-9"
               />
@@ -230,7 +234,10 @@ export default function ProviderDashboardClient() {
                       <input
                         type="date"
                         value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
+                        onChange={(e) => {
+                          setStartDate(e.target.value);
+                          setPage(1);
+                        }}
                         className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
                       />
                     </div>
@@ -239,7 +246,10 @@ export default function ProviderDashboardClient() {
                       <input
                         type="date"
                         value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
+                        onChange={(e) => {
+                          setEndDate(e.target.value);
+                          setPage(1);
+                        }}
                         className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
                       />
                     </div>
@@ -250,6 +260,7 @@ export default function ProviderDashboardClient() {
                         onClick={() => {
                           setStartDate("2022-01-06");
                           setEndDate("2022-01-13");
+                          setPage(1);
                         }}
                       >
                         Reset
@@ -281,6 +292,7 @@ export default function ProviderDashboardClient() {
                       setQuery("");
                       setStartDate("2022-01-06");
                       setEndDate("2022-01-13");
+                      setPage(1);
                     }}
                   >
                     Clear all
