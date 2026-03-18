@@ -1,9 +1,5 @@
-import React from "react";
+import { redirect } from "next/navigation";
 
 export default function ProviderPage() {
-    return (
-        <div>
-            <h1>Provider Page</h1>
-        </div>
-    );
+  redirect("/provider/dashboard");
 }
