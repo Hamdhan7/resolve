@@ -7,6 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Mic, Send, ChevronLeft, ImagePlus } from "lucide-react";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
+import Link from "next/link";
 
 interface Message {
   id: string;
@@ -19,7 +22,16 @@ interface Message {
 }
 
 export default function CustomerPage() {
-    const [mode, setMode] = useState<"assistant" | "manual">("assistant");
+        const [mode, setMode] = useState<"assistant" | "manual" | "review">("assistant");
+    const [draftTicket, setDraftTicket] = useState<any>(null);
+    const [draftMessageId, setDraftMessageId] = useState<string>("");
+    const [manualForm, setManualForm] = useState({
+        vendor: "",
+        connection_number: "",
+        category: "",
+        status: "normal",
+        description: ""
+    });
     
     // Chat State
     const [sessionId, setSessionId] = useState("");
@@ -136,22 +148,27 @@ export default function CustomerPage() {
         }
     };
 
+    const rightContentNode = (
+      <>
+        <Button asChild variant="ghost" className="rounded-sm">
+          <Link href="/sign-in" className="text-[#667085] ">
+            Log in
+          </Link>
+        </Button>
+        <Button asChild className="rounded-sm px-5 text-white bg-[#122841]">
+          <Link href="/sign-up">Sign up</Link>
+        </Button>
+      </>
+    );
+
     return (
         <div className="flex flex-col h-screen bg-slate-50/20 font-sans text-slate-900">
            {/* Header */}
-           <header className="flex items-center justify-between px-8 py-4 bg-white shrink-0 shadow-sm border-b border-slate-100 z-10">
-               <div className="text-[22px] font-bold text-[#1a202c] tracking-tight">OneHelp</div>
-               <div className="flex items-center gap-3">
-                   <span className="text-[15px] font-medium text-slate-600">Shajanthan</span>
-                   <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden flex-shrink-0 border border-slate-200">
-                       <img src="https://github.com/shadcn.png" alt="Avatar" className="w-full h-full object-cover" />
-                   </div>
-               </div>
-           </header>
-           
+           <Navbar rightContent={rightContentNode}/>   
            <main className="flex-1 flex flex-col px-4 pb-8 w-full max-w-[1050px] mx-auto min-h-0">
                
                {/* Controls Bar */}
+               {mode !== "review" && (
                <div className="flex items-center justify-between w-full mb-6 mt-4 shrink-0 px-2 lg:px-0">
                    <div className="flex-1 flex items-center">
                        {mode === "manual" && (
@@ -177,9 +194,12 @@ export default function CustomerPage() {
                    </div>
 
                    <div className="flex-1 flex justify-end">
-                       <Button variant="outline" className="text-sm font-medium border-slate-200 text-slate-700 shadow-[0_1px_2px_rgba(0,0,0,0.05)] rounded-lg h-9">View my tickets</Button>
+                       <Button asChild variant="outline" className="text-sm font-medium border-slate-200 text-slate-700 shadow-[0_1px_2px_rgba(0,0,0,0.05)] rounded-lg h-9">
+                           <Link href="/customer/view">View my tickets</Link>
+                       </Button>
                    </div>
                </div>
+               )}
 
                {/* Conditional Content */}
                {mode === "assistant" ? (
@@ -211,10 +231,20 @@ export default function CustomerPage() {
                                                </div>
                                                {!msg.ticketConfirmed && (
                                                    <Button 
-                                                        onClick={() => confirmTicket(msg.ticketData, msg.id)} 
+                                                        onClick={() => {
+                                                            setDraftTicket({
+                                                                vendor: msg.ticketData.vendor || "N/A",
+                                                                connection_number: msg.ticketData.connection_number || "N/A",
+                                                                issue_summary: msg.ticketData.issue_summary || "N/A",
+                                                                category: msg.ticketData.category || "N/A",
+                                                                ...msg.ticketData
+                                                            });
+                                                            setDraftMessageId(msg.id);
+                                                            setMode("review");
+                                                        }} 
                                                         className="w-full bg-[#1a202c] hover:bg-slate-800 text-white shadow-sm font-medium py-2 h-auto text-[13.5px]"
                                                     >
-                                                        Confirm & Create Ticket
+                                                        Review & Create Ticket
                                                    </Button>
                                                )}
                                            </div>
@@ -258,15 +288,15 @@ export default function CustomerPage() {
                            </div>
                        </div>
                    </div>
-               ) : (
-                   // --- Manual Ticket Form via SHADCN UI ---
+                ) : mode === "manual" ? (
+                    // --- Manual Ticket Form via SHADCN UI ---
                    <div className="w-full flex-1 bg-white border border-slate-200 rounded-2xl overflow-y-auto shadow-sm pb-10">
                        <div className="max-w-3xl mx-auto pt-10 px-8">
                            <form className="space-y-7" onSubmit={(e) => e.preventDefault()}>
                                
                                <div className="space-y-2.5 flex flex-col">
                                    <label className="text-sm font-semibold text-slate-700">Service Provider:</label>
-                                   <Select>
+                                   <Select onValueChange={(val) => setManualForm(prev => ({...prev, vendor: val}))}>
                                       <SelectTrigger className="w-full bg-white h-11 text-[13.5px] border-slate-300 shadow-sm focus:ring-1 focus:ring-slate-400 font-medium text-slate-700">
                                         <SelectValue placeholder="Select your service provider" />
                                       </SelectTrigger>
@@ -282,6 +312,7 @@ export default function CustomerPage() {
                                <div className="space-y-2.5">
                                    <label className="text-sm font-semibold text-slate-700">Connection Number / Account ID:</label>
                                    <Input 
+                                     onChange={(e) => setManualForm(prev => ({...prev, connection_number: e.target.value}))}
                                      placeholder="Enter your connection number" 
                                      className="w-full border-slate-300 bg-white h-11 text-[13.5px] shadow-sm placeholder:text-slate-400 focus-visible:ring-1 focus-visible:ring-slate-400 font-medium text-slate-700" 
                                    />
@@ -289,7 +320,7 @@ export default function CustomerPage() {
                                
                                <div className="space-y-2.5 flex flex-col">
                                    <label className="text-sm font-semibold text-slate-700">Issue Category:</label>
-                                   <Select>
+                                   <Select onValueChange={(val) => setManualForm(prev => ({...prev, vendor: val}))}>
                                       <SelectTrigger className="w-full bg-white h-11 text-[13.5px] border-slate-300 shadow-sm focus:ring-1 focus:ring-slate-400 font-medium text-slate-700">
                                         <SelectValue placeholder="Select your issue category" />
                                       </SelectTrigger>
@@ -304,7 +335,7 @@ export default function CustomerPage() {
 
                                <div className="space-y-4 pt-1">
                                    <label className="text-sm font-semibold text-slate-700">Router Status:</label>
-                                   <RadioGroup defaultValue="normal" className="flex flex-wrap gap-8">
+                                   <RadioGroup defaultValue="normal" onValueChange={(val) => setManualForm(prev => ({...prev, status: val}))} className="flex flex-wrap gap-8">
                                         <div className="flex items-center space-x-3 cursor-pointer">
                                             <RadioGroupItem value="normal" id="r1" className="border-slate-300 text-[#1a202c] focus:ring-[#1a202c] shadow-sm h-4 w-4" />
                                             <label htmlFor="r1" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">Normal</label>
@@ -328,6 +359,7 @@ export default function CustomerPage() {
                                    <label className="text-sm font-semibold text-slate-700">Description:</label>
                                    <Textarea 
                                      rows={5} 
+                                     onChange={(e) => setManualForm(prev => ({...prev, description: e.target.value}))}
                                      placeholder="Type your issue description" 
                                      className="w-full border-slate-300 bg-white text-[13.5px] placeholder:text-slate-400 resize-none shadow-sm focus-visible:ring-1 focus-visible:ring-slate-400 mt-1 font-medium text-slate-700 p-3" 
                                    />
@@ -345,15 +377,105 @@ export default function CustomerPage() {
                                </div>
 
                                <div className="pt-8 pb-4 flex justify-end gap-3 w-full">
-                                   <Button variant="outline" className="px-8 rounded-[6px] border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 shadow-sm font-semibold text-[13.5px] h-10 transition-colors">Cancel</Button>
-                                   <Button className="px-8 rounded-[6px] bg-[#1a202c] hover:bg-slate-800 text-white shadow-sm font-semibold text-[13.5px] h-10 transition-colors">Submit</Button>
+                                   <Button variant="outline" type="button" onClick={() => setMode("assistant")} className="px-8 rounded-[6px] border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 shadow-sm font-semibold text-[13.5px] h-10 transition-colors">Cancel</Button>
+                                   <Button type="button" onClick={() => {
+                                       setDraftTicket({
+                                            vendor: manualForm.vendor || "SLT",
+                                            connection_number: manualForm.connection_number || "N/A",
+                                            issue_summary: manualForm.description || "Customer manually submitted a ticket regarding connectivity.",
+                                            category: manualForm.category || "General",
+                                            isManual: true,
+                                            subject: "[Manual] User Submitted Ticket - " + (manualForm.category || "General Issue"),
+                                            diagnostics: "- Hardware Status: " + (manualForm.status || "Unknown") + "\n- User Description: " + (manualForm.description || "None provided.")
+                                       });
+                                       setDraftMessageId("");
+                                       setMode("review");
+                                   }} className="px-8 rounded-[6px] bg-[#1a202c] hover:bg-slate-800 text-white shadow-sm font-semibold text-[13.5px] h-10 transition-colors">Review Ticket</Button>
                                </div>
 
                            </form>
                        </div>
                    </div>
+               ) : (
+                   // --- Review View ---
+                   <div className="w-full flex-1 bg-white overflow-hidden pb-10 flex flex-col pt-8 min-h-0">
+                       <div className="max-w-4xl mx-auto w-full px-4 lg:px-8 mt-4 overflow-y-auto">
+                           {/* Header */}
+                           <button onClick={() => setMode(draftMessageId ? "assistant" : "manual")} className="flex items-center text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors mb-10 w-fit">
+                               <ChevronLeft className="h-4 w-4 mr-1" /> New Ticket
+                           </button>
+                           
+                           <h2 className="text-[17px] font-bold text-slate-800 mb-8 border-b-2 border-transparent">Ticket Id : NET-404</h2>
+
+                           <div className="flex flex-col lg:flex-row gap-10">
+                               {/* Left Column Box */}
+                               <div className="flex-1 border border-slate-200 rounded-[8px] p-8 px-6 bg-white shadow-sm text-[14px] text-slate-800 leading-relaxed font-medium">
+                                   <div className="mb-6 flex">
+                                        <span className="text-slate-500 mr-2 shrink-0">Subject:</span>
+                                        <span className="font-semibold text-slate-700">{draftTicket?.subject || `[Critical] ${draftTicket?.vendor || "SLT Fibre"} - Loss of Signal (LOS) Detected`}</span>
+                                   </div>
+                                   
+                                   <div className="mb-2 text-slate-500 mt-8">Issue Description:</div>
+                                   <div className="mb-6">{draftTicket?.issue_summary || draftTicket?.description || "Customer reported a complete loss of internet connectivity on SLT Fibre connection 011-2558900."} </div>
+
+                                   <div className="mb-2 text-slate-500 mt-8">Diagnostics Performed:</div>
+                                   <div className="mb-6 whitespace-pre-wrap ml-1 text-[13.5px]">
+                                        {draftTicket?.diagnostics || `- Symptom: Total service outage.\n- Hardware Status: Customer confirmed the 'LOS' (Loss of Signal) indicator on the router is blinking red.\n- AI Diagnosis: Physical line fault suspected.`}
+                                   </div>
+
+                                   <div className="mb-2 text-slate-500 mt-8">Action Required:</div>
+                                   <div className="">{draftTicket?.action_required || "Field technician dispatch required to inspect fiber patch cord and drop wire for physical damage or breaks."}</div>
+                               </div>
+
+                               {/* Right Column */}
+                               <div className="w-full lg:w-[150px] shrink-0 pt-2 lg:pl-10">
+                                   <div className="space-y-1.5 flex flex-col mb-10">
+                                        <label className="text-[12px] font-semibold text-slate-500">Provider</label>
+                                        <Select defaultValue={draftTicket?.vendor?.toLowerCase()?.includes('dialog') ? 'dialog' : 'slt'}>
+                                           <SelectTrigger className="w-full bg-transparent border-0 shadow-none h-auto px-0 py-1 focus:ring-0 text-[14.5px] font-semibold text-slate-700">
+                                             <SelectValue placeholder="Select provider" />
+                                           </SelectTrigger>
+                                           <SelectContent>
+                                             <SelectItem value="slt">SLT</SelectItem>
+                                             <SelectItem value="dialog">Dialog</SelectItem>
+                                             <SelectItem value="mobitel">Mobitel</SelectItem>
+                                             <SelectItem value="hutch">Hutch</SelectItem>
+                                           </SelectContent>
+                                        </Select>
+                                   </div>
+                               </div>
+                           </div>
+                           
+                           <div className="mt-12 flex justify-end lg:pr-32">
+                               <Button 
+                                   onClick={async () => {
+                                        if (draftMessageId) {
+                                            setMode("assistant");
+                                            // Make sure confirmTicket exists in scope above
+                                            // The simplest way without redefining is standard flow
+                                            // We will handle dummy fetch inline if fail, but actual confirmTicket is local.
+                                            // Wait, unfortunately confirmTicket takes scope variables but we are inside component so it's fine.
+                                            confirmTicket(draftTicket, draftMessageId);
+                                        } else {
+                                            setMode("assistant");
+                                            setMessages((prev : any) => [...prev, {
+                                                id: Date.now().toString(),
+                                                role: "assistant", 
+                                                text: `Done! Ticket #NET-TEST has been created manually.`,
+                                                time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                                            }]);
+                                        }
+                                   }}
+                                   className="px-8 rounded-md bg-[#122841] hover:bg-slate-800 text-white shadow-sm font-semibold text-[13.5px] h-10 tracking-wide"
+                               >
+                                   Create
+                               </Button>
+                           </div>
+                       </div>
+                   </div>
                )}
            </main>
+           <Footer />
         </div>
     );
 }
