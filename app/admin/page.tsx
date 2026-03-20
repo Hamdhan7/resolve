@@ -94,7 +94,7 @@ export default function AdminPage() {
                     <div className="flex items-center gap-2 sm:gap-3">
                         <Button variant="outline" className="rounded-sm">
                             <CircleUserRound className="size-4" />
-                            Admin Profile
+                            Company Registration Approvals
                         </Button>
                     </div>
                 }
@@ -104,7 +104,7 @@ export default function AdminPage() {
                 <div className="space-y-1">
                     <h1 className="text-3xl font-semibold tracking-tight">Admin Portal</h1>
                     <p className="text-sm text-muted-foreground">
-                        Review and manage company registration requests using the table below.
+                        Review and approve pending service provider accounts.
                     </p>
                 </div>
 
