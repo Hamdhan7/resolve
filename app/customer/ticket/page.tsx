@@ -2,30 +2,23 @@
 
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export default function TicketDetailsPage() {
   const ticket = {
     id: "NET-404",
     subject: "[Critical] SLT Fibre - Loss of Signal (LOS) Detected",
     description:
-      "Customer reported a complete loss of internet connectivity.",
+      "Customer reported a complete loss of internet connectivity on SLT Fibre connection 011-2558900.",
     diagnostics: [
-      "Total outage",
-      "LOS blinking red",
-      "Physical fault suspected",
+      "Symptom: Total service outage.",
+      "Hardware Status: Customer confirmed the 'LOS' (Loss of Signal) indicator on the router is blinking red.",
+      "AI Diagnosis: Physical line fault suspected.",
     ],
-    action: "Technician required",
+    action:
+      "Field technician dispatch required to inspect fiber patch cord and drop wire for physical damage or breaks.",
     provider: "Dialog",
-    status: "Pending",
     createdDate: "Jan 12, 2022",
+    status: "Pending",
   };
 
   return (
@@ -33,57 +26,66 @@ export default function TicketDetailsPage() {
       <Navbar />
 
       <section className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
-        <h2 className="mb-6 text-lg font-medium">
+        {/* Back */}
+        <div className="mb-4 text-sm text-muted-foreground cursor-pointer">
+          ← New Tickets
+        </div>
+
+        {/* Ticket ID */}
+        <h2 className="mb-6 text-sm font-medium text-muted-foreground">
           Ticket Id : {ticket.id}
         </h2>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {/* LEFT CARD */}
           <div className="md:col-span-2 rounded-lg border bg-white p-6 shadow-sm">
-            <p><strong>Subject:</strong> {ticket.subject}</p>
+            <p className="mb-4 text-sm">
+              <span className="font-medium">Subject:</span>{" "}
+              {ticket.subject}
+            </p>
 
-            <p className="mt-4 font-medium">Issue Description:</p>
-            <p>{ticket.description}</p>
+            <p className="mb-2 text-sm font-medium">Issue Description:</p>
+            <p className="mb-4 text-sm text-muted-foreground">
+              {ticket.description}
+            </p>
 
-            <ul className="mt-4 list-disc pl-5">
-              {ticket.diagnostics.map((d, i) => (
-                <li key={i}>{d}</li>
+            <p className="mb-2 text-sm font-medium">
+              Diagnostics Performed:
+            </p>
+            <ul className="mb-4 list-disc pl-5 text-sm text-muted-foreground space-y-1">
+              {ticket.diagnostics.map((item, index) => (
+                <li key={index}>{item}</li>
               ))}
             </ul>
 
-            <p className="mt-4"><strong>Action Required:</strong> {ticket.action}</p>
+            <p className="text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">
+                Action Required:
+              </span>{" "}
+              {ticket.action}
+            </p>
           </div>
 
-          <div className="flex flex-col justify-between">
-            <div className="space-y-6">
-              <div>
-                <p className="text-xs mb-2">Provider</p>
-                <Select defaultValue={ticket.provider}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Dialog">Dialog</SelectItem>
-                    <SelectItem value="SLT">SLT</SelectItem>
-                    <SelectItem value="Hutch">Hutch</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <p className="text-xs">Created date</p>
-                <p>{ticket.createdDate}</p>
-              </div>
-
-              <div>
-                <p className="text-xs">Status</p>
-                <span className="bg-blue-100 px-2 py-1 rounded text-xs">
-                  ● {ticket.status}
-                </span>
-              </div>
+          {/* RIGHT PANEL */}
+          <div className="space-y-6">
+            <div>
+              <p className="text-xs text-muted-foreground">Provider</p>
+              <p className="text-sm font-medium">{ticket.provider}</p>
             </div>
 
-            <div className="mt-8 flex justify-end">
-              <Button>Create</Button>
+            <div>
+              <p className="text-xs text-muted-foreground">Created date</p>
+              <p className="text-sm font-medium">
+                {ticket.createdDate}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xs text-muted-foreground">Status</p>
+              <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700">
+                <span className="h-2 w-2 rounded-full bg-blue-500"></span>
+                {ticket.status}
+              </span>
             </div>
           </div>
         </div>
