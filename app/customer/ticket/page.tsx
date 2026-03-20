@@ -13,23 +13,34 @@ export default function TicketDetailsPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col">
+    <main className="flex min-h-screen flex-col bg-background">
       <Navbar />
 
-      <section className="flex-1 p-6">
-        <h2>Ticket Id: {ticket.id}</h2>
+      <section className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
+        <h2 className="mb-6 text-lg font-medium">
+          Ticket Id: {ticket.id}
+        </h2>
 
-        <p><strong>Subject:</strong> {ticket.subject}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 rounded-lg border p-6 shadow-sm bg-white">
+            <p><strong>Subject:</strong> {ticket.subject}</p>
 
-        <p><strong>Description:</strong> {ticket.description}</p>
+            <p className="mt-4"><strong>Description:</strong></p>
+            <p>{ticket.description}</p>
 
-        <ul>
-          {ticket.diagnostics.map((d, i) => (
-            <li key={i}>{d}</li>
-          ))}
-        </ul>
+            <ul className="mt-4 list-disc pl-5">
+              {ticket.diagnostics.map((d, i) => (
+                <li key={i}>{d}</li>
+              ))}
+            </ul>
 
-        <p><strong>Action:</strong> {ticket.action}</p>
+            <p className="mt-4"><strong>Action:</strong> {ticket.action}</p>
+          </div>
+
+          <div>
+            <p>Right Panel</p>
+          </div>
+        </div>
       </section>
 
       <Footer />
