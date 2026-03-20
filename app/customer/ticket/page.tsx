@@ -2,6 +2,7 @@
 
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -13,9 +14,14 @@ import {
 export default function TicketDetailsPage() {
   const ticket = {
     id: "NET-404",
-    subject: "SLT Fibre Issue",
-    description: "Customer has no internet connection.",
-    diagnostics: ["No signal detected", "Router LOS blinking"],
+    subject: "[Critical] SLT Fibre - Loss of Signal (LOS) Detected",
+    description:
+      "Customer reported a complete loss of internet connectivity.",
+    diagnostics: [
+      "Total outage",
+      "LOS blinking red",
+      "Physical fault suspected",
+    ],
     action: "Technician required",
     provider: "Dialog",
     status: "Pending",
@@ -23,19 +29,19 @@ export default function TicketDetailsPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col bg-background">
+    <main className="flex min-h-screen flex-col bg-background text-foreground">
       <Navbar />
 
       <section className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
         <h2 className="mb-6 text-lg font-medium">
-          Ticket Id: {ticket.id}
+          Ticket Id : {ticket.id}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2 rounded-lg border p-6 shadow-sm bg-white">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="md:col-span-2 rounded-lg border bg-white p-6 shadow-sm">
             <p><strong>Subject:</strong> {ticket.subject}</p>
 
-            <p className="mt-4"><strong>Description:</strong></p>
+            <p className="mt-4 font-medium">Issue Description:</p>
             <p>{ticket.description}</p>
 
             <ul className="mt-4 list-disc pl-5">
@@ -44,32 +50,40 @@ export default function TicketDetailsPage() {
               ))}
             </ul>
 
-            <p className="mt-4"><strong>Action:</strong> {ticket.action}</p>
+            <p className="mt-4"><strong>Action Required:</strong> {ticket.action}</p>
           </div>
 
-          <div className="space-y-6">
-            <div>
-              <p className="text-xs mb-2">Provider</p>
-              <Select defaultValue={ticket.provider}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Dialog">Dialog</SelectItem>
-                  <SelectItem value="SLT">SLT</SelectItem>
-                  <SelectItem value="Hutch">Hutch</SelectItem>
-                </SelectContent>
-              </Select>
+          <div className="flex flex-col justify-between">
+            <div className="space-y-6">
+              <div>
+                <p className="text-xs mb-2">Provider</p>
+                <Select defaultValue={ticket.provider}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Dialog">Dialog</SelectItem>
+                    <SelectItem value="SLT">SLT</SelectItem>
+                    <SelectItem value="Hutch">Hutch</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <p className="text-xs">Created date</p>
+                <p>{ticket.createdDate}</p>
+              </div>
+
+              <div>
+                <p className="text-xs">Status</p>
+                <span className="bg-blue-100 px-2 py-1 rounded text-xs">
+                  ● {ticket.status}
+                </span>
+              </div>
             </div>
 
-            <div>
-              <p className="text-xs">Status</p>
-              <span>{ticket.status}</span>
-            </div>
-
-            <div>
-              <p className="text-xs">Created Date</p>
-              <p>{ticket.createdDate}</p>
+            <div className="mt-8 flex justify-end">
+              <Button>Create</Button>
             </div>
           </div>
         </div>
