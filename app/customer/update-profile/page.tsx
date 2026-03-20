@@ -36,6 +36,9 @@ export default function SettingsPage() {
             <label className="text-sm text-muted-foreground">Confirm new password</label>
             <input type="password" className="w-full border rounded-md p-2 mt-1" />
           </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Your new password must be more than 8 characters.
+          </p>
         </div>
       </section>
 
