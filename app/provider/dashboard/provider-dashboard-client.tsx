@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CalendarDays, Filter, MoreVertical, Search, Trash2 } from "lucide-react";
@@ -258,7 +257,10 @@ export default function ProviderDashboardClient() {
             <div className="flex items-center gap-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="rounded-lg">
+                  <Button
+                    variant="outline"
+                    className="rounded-lg transition-colors hover:bg-[#122841] hover:text-white hover:[&_svg]:text-white"
+                  >
                     <CalendarDays className="size-4 text-muted-foreground" />
                     {formatRangeLabel(startDate, endDate)}
                   </Button>
@@ -317,11 +319,14 @@ export default function ProviderDashboardClient() {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="rounded-lg">
+                  <Button
+                    variant="outline"
+                    className="group rounded-lg transition-colors hover:bg-[#122841] hover:text-white hover:[&_svg]:text-white"
+                  >
                     <Filter className="size-4 text-muted-foreground" />
                     Filters
                     {activeStatusFilterCount > 0 ? (
-                      <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground">
+                      <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground group-hover:bg-white group-hover:text-[#122841]">
                         {activeStatusFilterCount}
                       </span>
                     ) : null}
@@ -367,7 +372,7 @@ export default function ProviderDashboardClient() {
                   <Button
                     variant="ghost"
                     size="icon-sm"
-                    className="rounded-lg text-muted-foreground hover:text-foreground"
+                    className="rounded-lg text-muted-foreground hover:text-white"
                     onClick={(e) => {
                       e.stopPropagation();
                       void onDelete(row);
@@ -377,12 +382,15 @@ export default function ProviderDashboardClient() {
                     <Trash2 className="size-4" />
                   </Button>
                   <Button
-                    asChild
-                    variant="link"
-                    className="h-auto px-0 font-semibold text-blue-600 hover:text-blue-700"
-                    onClick={(e) => e.stopPropagation()}
+                    type="button"
+                    size="sm"
+                    className="rounded-lg font-semibold text-white transition-all duration-200 hover:text-white hover:brightness-110 hover:shadow-lg hover:shadow-[#122841]/45 active:scale-[0.98]"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      router.push(`/provider/tickets/${encodeURIComponent(row.id)}`);
+                    }}
                   >
-                    <Link href={`/provider/tickets/${encodeURIComponent(row.id)}`}>Manage</Link>
+                    Manage
                   </Button>
                 </div>
               )}
