@@ -2,6 +2,9 @@
 
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
+import Link from "next/link";
+import { CircleUserRound, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function TicketDetailsPage() {
   const ticket = {
@@ -21,14 +24,30 @@ export default function TicketDetailsPage() {
     status: "Pending",
   };
 
+  const rightContentNode = (
+    <div className="flex items-center gap-2 sm:gap-3">
+      <Button variant="ghost" className="rounded-sm text-slate-700 font-medium hidden sm:flex">
+        <CircleUserRound className="size-4 mr-2" />
+        Nadeesha Perera
+      </Button>
+      <Button asChild variant="outline" className="rounded-sm text-slate-500 hover:text-red-600 transition-colors">
+        <Link href="/" title="Log out">
+          <LogOut className="size-4" />
+        </Link>
+      </Button>
+    </div>
+  );
+
   return (
     <main className="flex min-h-screen flex-col bg-background text-foreground">
-      <Navbar />
+      <Navbar rightContent={rightContentNode} />
 
       <section className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
         {/* Back */}
-        <div className="mb-4 text-sm text-muted-foreground cursor-pointer">
-          ← New Tickets
+        <div className="mb-4 text-sm text-muted-foreground w-fit hover:text-foreground transition-colors">
+          <Link href="/customer/view" className="flex items-center gap-1">
+            ← My Tickets
+          </Link>
         </div>
 
         {/* Ticket ID */}

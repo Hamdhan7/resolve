@@ -2,7 +2,8 @@ import DataTable, { DataTableColumn } from "@/components/data-table";
 import Footer from "@/components/layout/footer";
 import Navbar from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
-import { CircleUserRound } from "lucide-react";
+import { CircleUserRound, LogOut } from "lucide-react";
+import Link from "next/link";
 
 type CompanyRequestRow = {
     companyName: string;
@@ -92,9 +93,14 @@ export default function AdminPage() {
             <Navbar
                 rightContent={
                     <div className="flex items-center gap-2 sm:gap-3">
-                        <Button variant="outline" className="rounded-sm">
-                            <CircleUserRound className="size-4" />
-                            Company Registration Approvals
+                        <Button variant="ghost" className="rounded-sm text-slate-700 font-medium hidden sm:flex">
+                            <CircleUserRound className="size-4 mr-2" />
+                            Admin Portal
+                        </Button>
+                        <Button asChild variant="outline" className="rounded-sm text-slate-500 hover:text-red-600 transition-colors">
+                            <Link href="/" title="Log out">
+                                <LogOut className="size-4" />
+                            </Link>
                         </Button>
                     </div>
                 }
