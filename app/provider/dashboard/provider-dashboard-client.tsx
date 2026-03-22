@@ -11,8 +11,17 @@ import StatusPill from "@/components/provider/status-pill";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { deleteTicket, getTickets } from "@/lib/api/client";
+import type { TicketStatus } from "@/lib/models/common";
 import type { Ticket } from "@/lib/models/ticket";
 import { cn } from "@/lib/utils";
 
@@ -47,6 +56,18 @@ function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
 }
 
+const ALL_STATUSES: TicketStatus[] = ["Open", "In Progress", "Resolved"];
+
+const STATUS_FILTER_LABEL: Record<TicketStatus, string> = {
+  Open: "Pending",
+  "In Progress": "Processing",
+  Resolved: "Resolved",
+};
+
+function defaultStatusFilters(): Record<TicketStatus, boolean> {
+  return { Open: true, "In Progress": true, Resolved: true };
+}
+
 function buildPageItems(current: number, total: number) {
   // returns numbers and "…" strings
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
@@ -70,6 +91,7 @@ export default function ProviderDashboardClient() {
   const [query, setQuery] = useState("");
   const [startDate, setStartDate] = useState("2022-01-06");
   const [endDate, setEndDate] = useState("2022-01-13");
+  const [statusFilters, setStatusFilters] = useState<Record<TicketStatus, boolean>>(defaultStatusFilters);
   const [page, setPage] = useState(1);
   const router = useRouter();
   const pageSize = 7;
@@ -98,9 +120,11 @@ export default function ProviderDashboardClient() {
       return created >= start && created <= end;
     });
 
-    if (!q) return byDate;
+    const byStatus = byDate.filter((t) => statusFilters[t.status]);
 
-    return byDate.filter((t) => {
+    if (!q) return byStatus;
+
+    return byStatus.filter((t) => {
       const haystack = [
         t.ticket_no,
         t.customer_name,
@@ -115,7 +139,7 @@ export default function ProviderDashboardClient() {
         .toLowerCase();
       return haystack.includes(q);
     });
-  }, [query, tickets, startDate, endDate]);
+  }, [query, tickets, startDate, endDate, statusFilters]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = clamp(page, 1, totalPages);
@@ -125,6 +149,20 @@ export default function ProviderDashboardClient() {
   }, [currentPage, filtered]);
 
   const paginationItems = useMemo(() => buildPageItems(currentPage, totalPages), [currentPage, totalPages]);
+
+  const excludedStatusCount = useMemo(
+    () => ALL_STATUSES.filter((s) => !statusFilters[s]).length,
+    [statusFilters]
+  );
+
+  function toggleStatusFilter(status: TicketStatus, next: boolean) {
+    setStatusFilters((prev) => {
+      const nextState = { ...prev, [status]: next };
+      if (!ALL_STATUSES.some((s) => nextState[s])) return prev;
+      return nextState;
+    });
+    setPage(1);
+  }
 
   const summaryCards: SummaryCard[] = useMemo(() => {
     const total = tickets.length;
@@ -284,14 +322,32 @@ export default function ProviderDashboardClient() {
                   <Button variant="outline" className="rounded-lg">
                     <Filter className="size-4 text-muted-foreground" />
                     Filters
+                    {excludedStatusCount > 0 ? (
+                      <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground">
+                        {excludedStatusCount}
+                      </span>
+                    ) : null}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="w-[220px]">
+                  <DropdownMenuLabel className="text-xs font-semibold text-muted-foreground">Status</DropdownMenuLabel>
+                  {ALL_STATUSES.map((s) => (
+                    <DropdownMenuCheckboxItem
+                      key={s}
+                      checked={statusFilters[s]}
+                      onCheckedChange={(checked) => toggleStatusFilter(s, checked === true)}
+                      onSelect={(e) => e.preventDefault()}
+                    >
+                      {STATUS_FILTER_LABEL[s]}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onSelect={() => {
                       setQuery("");
                       setStartDate("2022-01-06");
                       setEndDate("2022-01-13");
+                      setStatusFilters(defaultStatusFilters());
                       setPage(1);
                     }}
                   >
