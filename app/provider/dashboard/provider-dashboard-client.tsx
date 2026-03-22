@@ -68,6 +68,13 @@ function emptyStatusFilters(): Record<TicketStatus, boolean> {
   return { Open: false, "In Progress": false, Resolved: false };
 }
 
+/** Light solid fill on hover (pairs with navy text/icons) */
+const brandHoverOutline =
+  "rounded-lg transition-colors hover:bg-[#E8EEF4] hover:text-[#122841] hover:[&_svg]:text-[#122841]";
+
+const brandHoverGhost =
+  "rounded-lg transition-colors hover:bg-[#E8EEF4] hover:text-[#122841] hover:[&_svg]:text-[#122841]";
+
 function buildPageItems(current: number, total: number) {
   // returns numbers and "…" strings
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
@@ -222,7 +229,7 @@ export default function ProviderDashboardClient() {
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button size="icon-sm" variant="ghost" className="rounded-lg">
+                    <Button size="icon-sm" variant="ghost" className={brandHoverGhost}>
                       <MoreVertical className="size-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -257,10 +264,7 @@ export default function ProviderDashboardClient() {
             <div className="flex items-center gap-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="rounded-lg transition-colors hover:bg-[#122841] hover:text-white hover:[&_svg]:text-white"
-                  >
+                  <Button variant="outline" className={brandHoverOutline}>
                     <CalendarDays className="size-4 text-muted-foreground" />
                     {formatRangeLabel(startDate, endDate)}
                   </Button>
@@ -294,7 +298,7 @@ export default function ProviderDashboardClient() {
                     <div className="flex items-center justify-between pt-1">
                       <Button
                         variant="ghost"
-                        className="rounded-lg"
+                        className={brandHoverGhost}
                         onClick={() => {
                           setStartDate("2022-01-06");
                           setEndDate("2022-01-13");
@@ -304,7 +308,7 @@ export default function ProviderDashboardClient() {
                         Reset
                       </Button>
                       <Button
-                        className="rounded-lg"
+                        className="rounded-lg transition-all duration-200 hover:brightness-105 hover:shadow-md hover:shadow-[#122841]/20"
                         onClick={() => {
                           // close menu by triggering blur; radix handles onSelect but we keep simple
                           (document.activeElement as HTMLElement | null)?.blur?.();
@@ -319,14 +323,11 @@ export default function ProviderDashboardClient() {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="group rounded-lg transition-colors hover:bg-[#122841] hover:text-white hover:[&_svg]:text-white"
-                  >
+                  <Button variant="outline" className={cn("group", brandHoverOutline)}>
                     <Filter className="size-4 text-muted-foreground" />
                     Filters
                     {activeStatusFilterCount > 0 ? (
-                      <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground group-hover:bg-white group-hover:text-[#122841]">
+                      <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground group-hover:bg-[#E8EEF4] group-hover:text-[#122841]">
                         {activeStatusFilterCount}
                       </span>
                     ) : null}
@@ -372,7 +373,7 @@ export default function ProviderDashboardClient() {
                   <Button
                     variant="ghost"
                     size="icon-sm"
-                    className="rounded-lg text-muted-foreground hover:text-white"
+                    className={cn(brandHoverGhost, "text-muted-foreground")}
                     onClick={(e) => {
                       e.stopPropagation();
                       void onDelete(row);
@@ -384,7 +385,7 @@ export default function ProviderDashboardClient() {
                   <Button
                     type="button"
                     size="sm"
-                    className="rounded-lg font-semibold text-white transition-all duration-200 hover:text-white hover:brightness-110 hover:shadow-lg hover:shadow-[#122841]/45 active:scale-[0.98]"
+                    className="rounded-lg font-semibold text-white transition-all duration-200 hover:text-white hover:brightness-105 hover:shadow-lg hover:shadow-[#122841]/25 active:scale-[0.98]"
                     onClick={(e) => {
                       e.stopPropagation();
                       router.push(`/provider/tickets/${encodeURIComponent(row.id)}`);
@@ -402,7 +403,7 @@ export default function ProviderDashboardClient() {
           <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Button
               variant="outline"
-              className="rounded-lg"
+              className={brandHoverOutline}
               disabled={currentPage <= 1}
               onClick={() => setPage((p) => clamp(p - 1, 1, totalPages))}
             >
@@ -423,7 +424,7 @@ export default function ProviderDashboardClient() {
                       "inline-flex size-8 items-center justify-center rounded-lg transition-colors",
                       item === currentPage
                         ? "bg-primary/10 text-primary"
-                        : "hover:bg-muted/50 text-muted-foreground"
+                        : "text-muted-foreground hover:bg-[#E8EEF4] hover:text-[#122841]"
                     )}
                   >
                     {item}
@@ -433,7 +434,7 @@ export default function ProviderDashboardClient() {
             </div>
             <Button
               variant="outline"
-              className="rounded-lg"
+              className={brandHoverOutline}
               disabled={currentPage >= totalPages}
               onClick={() => setPage((p) => clamp(p + 1, 1, totalPages))}
             >
