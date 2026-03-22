@@ -19,7 +19,7 @@ export default function Navbar({ rightContent }: NavbarProps) {
             src="/brand/onehelp-logo-navbar.png"
             alt="OneHelp"
             width={200}
-            height={48}
+            height={50}
             className="h-8 w-auto sm:h-9"
             priority
           />
