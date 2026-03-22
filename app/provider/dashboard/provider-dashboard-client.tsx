@@ -64,8 +64,9 @@ const STATUS_FILTER_LABEL: Record<TicketStatus, string> = {
   Resolved: "Resolved",
 };
 
-function defaultStatusFilters(): Record<TicketStatus, boolean> {
-  return { Open: true, "In Progress": true, Resolved: true };
+/** No checkboxes selected = no status restriction (show all). */
+function emptyStatusFilters(): Record<TicketStatus, boolean> {
+  return { Open: false, "In Progress": false, Resolved: false };
 }
 
 function buildPageItems(current: number, total: number) {
@@ -91,7 +92,7 @@ export default function ProviderDashboardClient() {
   const [query, setQuery] = useState("");
   const [startDate, setStartDate] = useState("2022-01-06");
   const [endDate, setEndDate] = useState("2022-01-13");
-  const [statusFilters, setStatusFilters] = useState<Record<TicketStatus, boolean>>(defaultStatusFilters);
+  const [statusFilters, setStatusFilters] = useState<Record<TicketStatus, boolean>>(emptyStatusFilters);
   const [page, setPage] = useState(1);
   const router = useRouter();
   const pageSize = 7;
@@ -120,7 +121,8 @@ export default function ProviderDashboardClient() {
       return created >= start && created <= end;
     });
 
-    const byStatus = byDate.filter((t) => statusFilters[t.status]);
+    const anyStatusSelected = ALL_STATUSES.some((s) => statusFilters[s]);
+    const byStatus = anyStatusSelected ? byDate.filter((t) => statusFilters[t.status]) : byDate;
 
     if (!q) return byStatus;
 
@@ -150,17 +152,13 @@ export default function ProviderDashboardClient() {
 
   const paginationItems = useMemo(() => buildPageItems(currentPage, totalPages), [currentPage, totalPages]);
 
-  const excludedStatusCount = useMemo(
-    () => ALL_STATUSES.filter((s) => !statusFilters[s]).length,
+  const activeStatusFilterCount = useMemo(
+    () => ALL_STATUSES.filter((s) => statusFilters[s]).length,
     [statusFilters]
   );
 
   function toggleStatusFilter(status: TicketStatus, next: boolean) {
-    setStatusFilters((prev) => {
-      const nextState = { ...prev, [status]: next };
-      if (!ALL_STATUSES.some((s) => nextState[s])) return prev;
-      return nextState;
-    });
+    setStatusFilters((prev) => ({ ...prev, [status]: next }));
     setPage(1);
   }
 
@@ -322,9 +320,9 @@ export default function ProviderDashboardClient() {
                   <Button variant="outline" className="rounded-lg">
                     <Filter className="size-4 text-muted-foreground" />
                     Filters
-                    {excludedStatusCount > 0 ? (
+                    {activeStatusFilterCount > 0 ? (
                       <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground">
-                        {excludedStatusCount}
+                        {activeStatusFilterCount}
                       </span>
                     ) : null}
                   </Button>
@@ -347,7 +345,7 @@ export default function ProviderDashboardClient() {
                       setQuery("");
                       setStartDate("2022-01-06");
                       setEndDate("2022-01-13");
-                      setStatusFilters(defaultStatusFilters());
+                      setStatusFilters(emptyStatusFilters());
                       setPage(1);
                     }}
                   >
