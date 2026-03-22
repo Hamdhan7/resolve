@@ -16,6 +16,7 @@ export type Ticket = {
   issue_data: TicketIssueData;
   internal_notes: string | null;
   created_at: ISODateTimeString;
+  vendor_name?: string;
   customer_name?: string;
   customer_phone?: string;
   customer_location?: string;

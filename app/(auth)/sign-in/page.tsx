@@ -1,10 +1,15 @@
+"use client";
+
 import AuthSplitLayout from "@/components/auth-split-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
+  const router = useRouter();
+
   return (
     <AuthSplitLayout
       title="Sign in"
@@ -13,7 +18,13 @@ export default function SignInPage() {
       footerHref="/sign-up"
       footerLinkLabel="Sign up"
     >
-      <form className="space-y-5">
+      <form 
+        className="space-y-5" 
+        onSubmit={(e) => {
+          e.preventDefault();
+          router.push("/customer");
+        }}
+      >
         <div className="space-y-2">
           <Label htmlFor="email">
             Email

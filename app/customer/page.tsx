@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Mic, Send, ChevronLeft, ImagePlus } from "lucide-react";
+import { Mic, Send, ChevronLeft, ImagePlus, CircleUserRound, LogOut } from "lucide-react";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import Link from "next/link";
@@ -149,16 +149,17 @@ export default function CustomerPage() {
     };
 
     const rightContentNode = (
-      <>
-        <Button asChild variant="ghost" className="rounded-sm">
-          <Link href="/sign-in" className="text-[#667085] ">
-            Log in
+      <div className="flex items-center gap-2 sm:gap-3">
+        <Button variant="ghost" className="rounded-sm text-slate-700 font-medium hidden sm:flex">
+          <CircleUserRound className="size-4 mr-2" />
+          Nadeesha Perera
+        </Button>
+        <Button asChild variant="outline" className="rounded-sm text-slate-500 hover:text-red-600 transition-colors">
+          <Link href="/" title="Log out">
+            <LogOut className="size-4" />
           </Link>
         </Button>
-        <Button asChild className="rounded-sm px-5 text-white bg-[#122841]">
-          <Link href="/sign-up">Sign up</Link>
-        </Button>
-      </>
+      </div>
     );
 
     return (

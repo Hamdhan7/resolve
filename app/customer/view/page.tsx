@@ -12,55 +12,46 @@ import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
-import { ChevronLeft, Search, Calendar, Filter, ArrowLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, Search, Calendar, Filter, ArrowLeft, ArrowRight, CircleUserRound, LogOut } from "lucide-react";
+
+import { Ticket } from "@/lib/models/ticket";
+import { TicketStatus } from "@/lib/models/common";
 
 // Mock API function
-const fetchMockTickets = async (): Promise<TicketData[]> => {
+const fetchMockTickets = async (): Promise<Ticket[]> => {
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 600));
   
   return [
-    { id: "NET-404", provider: "Dialog", description: "Connectivity Loss", date: "Jan 13, 2022", status: "Processing" },
-    { id: "NET-405", provider: "Dialog", description: "Slow Speed", date: "Jan 13, 2022", status: "Addressed" },
-    { id: "NET-406", provider: "Airtel", description: "Mobile Data Issue", date: "Jan 13, 2022", status: "Addressed" },
-    { id: "NET-407", provider: "Airtel", description: "TV Service", date: "Jan 13, 2022", status: "Declined" },
-    { id: "NET-408", provider: "Airtel", description: "Mobile Data Issue", date: "Jan 12, 2022", status: "Pending" },
-    { id: "NET-409", provider: "SLTMobitel", description: "Slow Internet Speed", date: "Jan 12, 2022", status: "Addressed" },
-    { id: "NET-410", provider: "SLTMobitel", description: "Connectivity Loss", date: "Jan 12, 2022", status: "Addressed" },
-    { id: "NET-411", provider: "Dialog", description: "Router Replacement", date: "Jan 11, 2022", status: "Processing" },
-    { id: "NET-412", provider: "Airtel", description: "Billing Issue", date: "Jan 11, 2022", status: "Declined" },
-    { id: "NET-413", provider: "SLTMobitel", description: "Line Disconnection", date: "Jan 10, 2022", status: "Pending" },
-    { id: "NET-414", provider: "Dialog", description: "Package Upgrade", date: "Jan 10, 2022", status: "Addressed" },
-    { id: "NET-415", provider: "Hutch", description: "Coverage Issue", date: "Jan 09, 2022", status: "Processing" },
+    { id: "1", ticket_no: "NET-404", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "In Progress", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Connectivity Loss", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
+    { id: "2", ticket_no: "NET-405", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "Resolved", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Slow Speed", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
+    { id: "3", ticket_no: "NET-406", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Resolved", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "Mobile Data Issue", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
+    { id: "4", ticket_no: "NET-407", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Resolved", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "TV Service", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
+    { id: "5", ticket_no: "NET-408", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Open", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "Mobile Data Issue", category: "Network" }, internal_notes: null, created_at: "2022-01-12T00:00:00.000Z" },
+    { id: "6", ticket_no: "NET-409", customer_id: "c1", vendor_id: "v3", vendor_name: "SLTMobitel", status: "Resolved", issue_data: { vendor: "SLTMobitel", connection_number: "N/A", issue_summary: "Slow Internet Speed", category: "Network" }, internal_notes: null, created_at: "2022-01-12T00:00:00.000Z" },
+    { id: "7", ticket_no: "NET-410", customer_id: "c1", vendor_id: "v3", vendor_name: "SLTMobitel", status: "Resolved", issue_data: { vendor: "SLTMobitel", connection_number: "N/A", issue_summary: "Connectivity Loss", category: "Network" }, internal_notes: null, created_at: "2022-01-12T00:00:00.000Z" },
+    { id: "8", ticket_no: "NET-411", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "In Progress", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Router Replacement", category: "Network" }, internal_notes: null, created_at: "2022-01-11T00:00:00.000Z" },
+    { id: "9", ticket_no: "NET-412", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Resolved", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "Billing Issue", category: "Billing" }, internal_notes: null, created_at: "2022-01-11T00:00:00.000Z" },
+    { id: "10", ticket_no: "NET-413", customer_id: "c1", vendor_id: "v3", vendor_name: "SLTMobitel", status: "Open", issue_data: { vendor: "SLTMobitel", connection_number: "N/A", issue_summary: "Line Disconnection", category: "Network" }, internal_notes: null, created_at: "2022-01-10T00:00:00.000Z" },
+    { id: "11", ticket_no: "NET-414", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "Resolved", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Package Upgrade", category: "Billing" }, internal_notes: null, created_at: "2022-01-10T00:00:00.000Z" },
+    { id: "12", ticket_no: "NET-415", customer_id: "c1", vendor_id: "v4", vendor_name: "Hutch", status: "In Progress", issue_data: { vendor: "Hutch", connection_number: "N/A", issue_summary: "Coverage Issue", category: "Network" }, internal_notes: null, created_at: "2022-01-09T00:00:00.000Z" },
   ];
 };
 
-type TicketStatus = "Processing" | "Addressed" | "Declined" | "Pending";
-
-export interface TicketData {
-  id: string;
-  provider: string;
-  description: string;
-  date: string;
-  status: TicketStatus;
-}
-
 const statusBadgeStyles: Record<TicketStatus, string> = {
-  Processing: "bg-slate-100 text-slate-600 border border-slate-200/60",
-  Addressed: "bg-emerald-50 text-emerald-700 border border-emerald-100/60",
-  Declined: "bg-red-50 text-red-700 border border-red-100/60",
-  Pending: "bg-blue-50 text-blue-700 border border-blue-100/60",
+  "In Progress": "bg-slate-100 text-slate-600 border border-slate-200/60",
+  "Resolved": "bg-emerald-50 text-emerald-700 border border-emerald-100/60",
+  "Open": "bg-blue-50 text-blue-700 border border-blue-100/60",
 };
 
 const statusDotStyles: Record<TicketStatus, string> = {
-  Processing: "bg-slate-400",
-  Addressed: "bg-emerald-500",
-  Declined: "bg-red-500",
-  Pending: "bg-blue-500",
+  "In Progress": "bg-slate-400",
+  "Resolved": "bg-emerald-500",
+  "Open": "bg-blue-500",
 };
 
 export default function ViewTicketsPage() {
-  const [data, setData] = useState<TicketData[]>([]);
+  const [data, setData] = useState<Ticket[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Filters & Pagination State
@@ -82,14 +73,13 @@ export default function ViewTicketsPage() {
   // Compute Filtered and Paginated Data
   const filteredData = data.filter((ticket) => {
     const matchesSearch = 
-      ticket.id.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      ticket.provider.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      ticket.description.toLowerCase().includes(searchQuery.toLowerCase());
+      ticket.ticket_no.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      (ticket.vendor_name?.toLowerCase() || "").includes(searchQuery.toLowerCase()) || 
+      ticket.issue_data.issue_summary.toLowerCase().includes(searchQuery.toLowerCase());
     
     let matchesDate = true;
     if (dateRange?.from) {
-      // Mock parsing: "Jan 13, 2022" -> Date object
-      const ticketDate = new Date(ticket.date);
+      const ticketDate = new Date(ticket.created_at);
       if (dateRange.to) {
         matchesDate = ticketDate >= dateRange.from && ticketDate <= dateRange.to;
       } else {
@@ -110,46 +100,47 @@ export default function ViewTicketsPage() {
 
   // Use the rightContent component for the navbar exactly like the main customer page
   const rightContentNode = (
-    <>
-      <Button asChild variant="ghost" className="rounded-sm">
-        <Link href="/sign-in" className="text-[#667085] ">
-          Log in
-        </Link>
-      </Button>
-      <Button asChild className="rounded-sm px-5 text-white bg-[#122841]">
-        <Link href="/sign-up">Sign up</Link>
-      </Button>
-    </>
+      <div className="flex items-center gap-2 sm:gap-3">
+        <Button variant="ghost" className="rounded-sm text-slate-700 font-medium hidden sm:flex">
+          <CircleUserRound className="size-4 mr-2" />
+          Nadeesha Perera
+        </Button>
+        <Button asChild variant="outline" className="rounded-sm text-slate-500 hover:text-red-600 transition-colors">
+          <Link href="/" title="Log out">
+            <LogOut className="size-4" />
+          </Link>
+        </Button>
+      </div>
   );
 
-  const columns: DataTableColumn<TicketData>[] = [
+  const columns: DataTableColumn<Ticket>[] = [
     {
       key: "id",
       header: "Ticket Id",
       className: "text-[#667085] font-medium text-[13.5px]",
       headerClassName: "text-[12px] font-semibold text-slate-500 bg-white border-b-0 py-4 px-6 rounded-tl-xl",
-      cell: (row) => <span className="text-slate-400 px-2">{row.id}</span>
+      cell: (row) => <span className="text-slate-400 px-2">{row.ticket_no}</span>
     },
     {
       key: "provider",
       header: "Provider",
       className: "font-semibold text-slate-800 text-[13.5px]",
       headerClassName: "text-[12px] font-semibold text-slate-500 bg-white border-b-0 py-4",
-      cell: (row) => <span>{row.provider}</span>
+      cell: (row) => <span>{row.vendor_name}</span>
     },
     {
       key: "description",
       header: "Description",
       className: "text-slate-500 font-medium text-[13.5px]",
       headerClassName: "text-[12px] font-semibold text-slate-500 bg-white w-[30%]",
-      cell: (row) => <span>{row.description}</span>
+      cell: (row) => <span>{row.issue_data.issue_summary}</span>
     },
     {
       key: "date",
       header: <span className="flex items-center gap-1 cursor-pointer hover:text-slate-700">Date <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>,
       className: "text-slate-500 font-medium text-[13.5px]",
       headerClassName: "text-[12px] font-semibold text-slate-500 bg-white",
-      cell: (row) => <span>{row.date}</span>
+      cell: (row) => <span>{new Date(row.created_at).toLocaleDateString()}</span>
     },
     {
       key: "status",

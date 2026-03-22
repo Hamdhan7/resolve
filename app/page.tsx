@@ -70,6 +70,11 @@ const figurePalette = [
 const rightContent = () => {
   return (
     <>
+      <Button asChild variant="ghost" className="rounded-sm hidden sm:inline-flex">
+        <Link href="/provider/dashboard" className="text-[#667085]">
+          Provider Portal
+        </Link>
+      </Button>
       <Button asChild variant="ghost" className="rounded-sm">
         <Link href="/sign-in" className="text-[#667085] ">
           Log in
@@ -109,10 +114,10 @@ export default function Home() {
                 size="lg"
                 className="min-w-56 rounded-sm hover:text-white"
               >
-                <Link href="/sign-in">Check Existing Ticket</Link>
+                <Link href="/customer/view">Check Existing Ticket</Link>
               </Button>
               <Button asChild size="lg" className="min-w-56 rounded-sm ">
-                <Link href="/sign-up">
+                <Link href="/customer">
                   Start Complaint Assistant
                   <ArrowRight className="size-4" />
                 </Link>

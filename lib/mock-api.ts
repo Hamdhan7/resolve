@@ -1,7 +1,9 @@
 
 // --- HELPER: Simulate Network Delay ---
-import {Vendor, Profile, Ticket, ChatApiResponse} from "@/app/types";
-
+import type { Vendor } from "@/lib/models/vendor";
+import type { Profile } from "@/lib/models/profile";
+import type { Ticket } from "@/lib/models/ticket";
+import type { ChatApiResponse } from "@/lib/models/chat";
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // --- MOCK DATA ---
@@ -31,6 +33,7 @@ export const MOCK_VENDOR_USER: Profile = {
 export const MOCK_TICKETS: Ticket[] = [
     {
         id: 'ticket-1',
+        ticket_no: 'TCK-001',
         customer_id: 'user1-uuid',
         vendor_id: 'v1-uuid',
         vendor_name: 'Dialog',
@@ -46,6 +49,7 @@ export const MOCK_TICKETS: Ticket[] = [
     },
     {
         id: 'ticket-2',
+        ticket_no: 'TCK-002',
         customer_id: 'user1-uuid',
         vendor_id: 'v2-uuid',
         vendor_name: 'SLT Mobitel',
@@ -61,6 +65,7 @@ export const MOCK_TICKETS: Ticket[] = [
     },
     {
         id: 'ticket-3',
+        ticket_no: 'TCK-003',
         customer_id: 'user2-uuid', // Different user
         vendor_id: 'v1-uuid',
         vendor_name: 'Dialog',
