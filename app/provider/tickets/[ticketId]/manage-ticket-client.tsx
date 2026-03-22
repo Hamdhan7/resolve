@@ -157,9 +157,9 @@ export default function ManageTicketClient({ ticketId }: { ticketId: string }) {
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.65fr_1fr]">
-        <div className="space-y-6">
-          <Card className="rounded-3xl shadow-none">
+      <div className="grid gap-6 lg:grid-cols-[1.65fr_1fr] lg:items-stretch">
+        <div className="flex min-h-0 flex-col gap-6 lg:h-full">
+          <Card className="shrink-0 rounded-3xl shadow-none">
             <CardHeader>
               <h2 className="text-sm font-semibold tracking-wide text-muted-foreground">Issue Details</h2>
             </CardHeader>
@@ -188,18 +188,18 @@ export default function ManageTicketClient({ ticketId }: { ticketId: string }) {
             </CardContent>
           </Card>
 
-          <Card className="rounded-3xl shadow-none">
+          <Card className="flex min-h-0 flex-1 flex-col rounded-3xl shadow-none">
             <CardHeader>
               <h2 className="text-sm font-semibold tracking-wide text-muted-foreground">Internal Notes</h2>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="flex min-h-0 flex-1 flex-col gap-3">
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Add notes for the technical team..."
-                className="min-h-28 w-full resize-none rounded-2xl border border-input bg-background px-4 py-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30"
+                className="min-h-28 w-full flex-1 resize-none rounded-2xl border border-input bg-background px-4 py-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/30"
               />
-              <div className="flex justify-end">
+              <div className="flex shrink-0 justify-end">
                 <Button className="rounded-lg" onClick={() => void onAddNote()} disabled={savingNotes}>
                   {savingNotes ? "Saving..." : "Add Note"}
                 </Button>
@@ -208,7 +208,7 @@ export default function ManageTicketClient({ ticketId }: { ticketId: string }) {
           </Card>
         </div>
 
-        <div className="space-y-6">
+        <div className="flex flex-col gap-6 lg:h-full">
           <Card className="rounded-3xl shadow-none">
             <CardHeader>
               <h2 className="text-sm font-semibold tracking-wide text-muted-foreground">Customer Info</h2>
