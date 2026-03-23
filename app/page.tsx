@@ -107,49 +107,37 @@ export default function Home() {
     <main className="min-h-screen bg-white text-foreground">
       <Navbar rightContent={rightContent()} />
 
-      <section className="relative overflow-hidden border-b border-border/60 bg-[#FAFBFF]">
-        {/* Background glow effects for premium feel */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute -top-32 left-1/2 h-[45rem] w-[45rem] -translate-x-1/2 rounded-full bg-blue-400/10 blur-[120px]" />
-          <div className="absolute top-1/4 right-0 h-[30rem] w-[30rem] rounded-full bg-sky-300/10 blur-[100px]" />
-          <div className="absolute top-0 inset-x-0 h-96 bg-gradient-to-b from-white to-transparent" />
-        </div>
+      <section className="relative overflow-hidden border-b border-border/60 bg-white">
+        {/* Dotted Background Pattern */}
+        <div 
+          className="absolute inset-0 z-0 opacity-[0.3]" 
+          style={{ backgroundImage: 'radial-gradient(#94a3b8 1px, transparent 1px)', backgroundSize: '24px 24px' }}
+        />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 pt-20 lg:px-10 lg:pt-28">
+        <div className="relative z-10 mx-auto max-w-7xl px-6 pt-16 lg:px-10 lg:pt-20">
           <div className="mx-auto max-w-4xl text-center">
-            <div className="mb-6 inline-flex items-center rounded-full border border-blue-200 bg-blue-50/50 px-4 py-1.5 text-sm font-medium text-blue-700 shadow-sm backdrop-blur-md">
-              <span className="flex h-2 w-2 rounded-full bg-blue-600 mr-2 animate-pulse" />
-              Revolutionizing Customer Support
-            </div>
-            
-            <h1 className="text-balance text-5xl font-extrabold tracking-tight text-slate-900 sm:text-6xl lg:text-[4.5rem] lg:leading-[1.1]">
+            <h1 className="text-balance text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl lg:leading-[1.1]">
               No More Waiting on Hold.
               <br />
-              <span className="bg-gradient-to-r from-blue-700 via-blue-500 to-sky-400 bg-clip-text text-transparent">
-                One Solution for Everything.
-              </span>
+              One Solution for Everything.
             </h1>
 
-            <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-slate-600 sm:text-xl">
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
               Report internet issues, billing disputes, and signal drops for
               Dialog, SLT, Mobitel, and Hutch instantly using our multilingual
               AI assistant.
             </p>
 
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button
                 asChild
                 variant="outline"
                 size="lg"
-                className="h-14 min-w-[220px] rounded-full border-slate-200 bg-white/50 px-8 text-base font-medium text-slate-700 shadow-sm backdrop-blur-sm transition-all hover:bg-slate-50 hover:text-slate-900"
+                className="min-w-56 rounded-sm hover:text-white"
               >
                 <Link href="/customer/view">Check Existing Ticket</Link>
               </Button>
-              <Button 
-                asChild 
-                size="lg" 
-                className="h-14 min-w-[220px] rounded-full bg-[#122841] px-8 text-base font-medium text-white shadow-xl shadow-blue-900/20 transition-all hover:scale-105 hover:bg-[#0d1d2f]"
-              >
+              <Button asChild size="lg" className="min-w-56 rounded-sm bg-[#122841] text-white hover:bg-[#0d1d2f]">
                 <Link href="/customer">
                   Start Complaint Assistant
                   <ArrowRight className="ml-2 size-5" />
