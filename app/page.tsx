@@ -125,113 +125,16 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-14 overflow-hidden rounded-t-[2.5rem] border border-border/50 bg-[linear-gradient(180deg,#f0f4ff_0%,#1a2340_65%)] shadow-2xl shadow-primary/10 dark:border-white/10">
-            <div className="relative min-h-115 px-4 pt-10 sm:px-8 lg:px-12">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.45),transparent_60%)]" />
+          <div className="mt-14 overflow-hidden rounded-t-[2.5rem] border border-border/50 shadow-2xl shadow-primary/10 dark:border-white/10">
+            <div className="relative px-4 pt-10 pb-8 sm:px-8 lg:px-12 flex justify-center">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-56" />
 
-              <div className="absolute left-4 top-24 hidden w-40 space-y-4 xl:block">
-                <div className="rounded-2xl border border-white/60 bg-white/90 p-4 shadow-lg">
-                  <div className="space-y-2">
-                    <div className="h-2.5 w-24 rounded-full bg-slate-200" />
-                    <div className="h-2.5 w-16 rounded-full bg-slate-200" />
-                    <div className="h-2.5 w-20 rounded-full bg-slate-200" />
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 rounded-2xl border border-emerald-200/70 bg-white/90 p-4 shadow-lg">
-                  <CheckCircle2 className="size-9 rounded-full bg-emerald-500 p-2 text-white" />
-                  <div className="space-y-2">
-                    <div className="h-2.5 w-16 rounded-full bg-slate-200" />
-                    <div className="h-2.5 w-10 rounded-full bg-slate-200" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="absolute right-4 top-20 hidden w-52 space-y-4 xl:block">
-                <div className="rounded-2xl border border-white/60 bg-white/90 p-4 shadow-lg">
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="mt-1 size-10 rounded-full bg-slate-100" />
-                      <div className="flex-1 space-y-2">
-                        <div className="h-2.5 w-24 rounded-full bg-slate-200" />
-                        <div className="h-2.5 w-16 rounded-full bg-slate-200" />
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <div className="mt-1 size-10 rounded-full bg-slate-100" />
-                      <div className="flex-1 space-y-2">
-                        <div className="h-2.5 w-24 rounded-full bg-slate-200" />
-                        <div className="h-2.5 w-14 rounded-full bg-slate-200" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-white/60 bg-white/90 p-4 shadow-lg">
-                  <div className="space-y-2">
-                    <div className="h-2.5 w-24 rounded-full bg-slate-200" />
-                    <div className="h-2.5 w-16 rounded-full bg-slate-200" />
-                  </div>
-                  <div className="mt-4 flex gap-2">
-                    <div className="size-2.5 rounded-full bg-slate-300" />
-                    <div className="size-2.5 rounded-full bg-slate-300" />
-                    <div className="size-2.5 rounded-full bg-slate-300" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center pb-10">
-                <div className="relative flex w-full max-w-3xl items-end justify-center pb-8 pt-2">
-                  <div className="absolute top-0 z-20 rounded-2xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-lg">
-                    <div className="flex items-center gap-1.5">
-                      <span className="size-2 rounded-full bg-white" />
-                      <span className="size-2 rounded-full bg-white" />
-                      <span className="size-2 rounded-full bg-white" />
-                    </div>
-                  </div>
-
-                  <div className="absolute top-12 z-20 flex h-28 w-24 items-start justify-center rounded-t-[3rem] bg-sky-200">
-                    <div className="absolute -top-10 size-16 rounded-full bg-orange-200">
-                      <div className="absolute left-2 top-0 h-6 w-12 rounded-b-2xl rounded-t-full bg-amber-950" />
-                    </div>
-                    <div className="absolute top-10 h-14 w-16 rounded-md bg-blue-500" />
-                    <div className="absolute -left-4 top-12 h-3 w-10 rotate-[-20deg] rounded-full bg-orange-200" />
-                    <div className="absolute -right-3 top-14 h-3 w-8 rotate-35 rounded-full bg-sky-200" />
-                  </div>
-
-                  <div className="relative mt-28 w-full rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-2xl shadow-slate-900/20 sm:p-6">
-                    <div className="mx-auto flex max-w-md items-center justify-center">
-                      <div className="relative flex aspect-square w-44 items-center justify-center rounded-full bg-blue-900 text-white sm:w-52">
-                        <span className="text-lg font-bold">OneHelp</span>
-                        {orbitNodeClasses.map((nodeClass) => (
-                          <div
-                            key={nodeClass}
-                            className={`absolute ${nodeClass} flex size-7 items-center justify-center rounded-full border border-slate-200 bg-white shadow-sm`}
-                          >
-                            <div className="size-2 rounded-full bg-blue-300" />
-                            <div className="absolute inset-1/2 h-px w-14 origin-left bg-slate-200 first:hidden" />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="absolute -bottom-2 left-1/2 h-4 w-[68%] -translate-x-1/2 rounded-full bg-slate-300" />
-                  <div className="absolute -bottom-5 left-1/2 h-2.5 w-40 -translate-x-1/2 rounded-full bg-slate-400" />
-                </div>
-
-                <div className="grid w-full grid-cols-2 gap-4 sm:grid-cols-4">
-                  {figurePalette.map((person, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center justify-end gap-2"
-                    >
-                      <div className={`size-10 rounded-full ${person.head}`} />
-                      <div
-                        className={`h-14 w-10 rounded-t-full ${person.body}`}
-                      />
-                    </div>
-                  ))}
-                </div>
+              <div className="relative z-10 w-full max-w-5xl rounded-2xl border border-white/20 shadow-2xl overflow-hidden bg-white/5 backdrop-blur-sm">
+                <img
+                  src="/hero-image.png"
+                  alt="OneHelp Dashboard"
+                  className="w-full h-auto object-cover"
+                />
               </div>
             </div>
           </div>
