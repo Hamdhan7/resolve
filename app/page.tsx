@@ -177,27 +177,27 @@ export default function Home() {
         
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 text-center">
           <div className="mb-6 inline-flex uppercase tracking-wider items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-semibold text-blue-300 backdrop-blur-md">
-            Launching Soon
+            Available Now
           </div>
           <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-5xl text-white">
-            Be Part of the Revolution
+            Transform Your Support Flow
           </h2>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-blue-100/70">
-            Join thousands of teams transforming their customer support experience. Get exclusive early access, special launch pricing, and be among the first to experience the future of unified customer communication.
+            Join the forward-thinking teams that are delivering exceptional experiences. Consolidate your communication and let intelligent AI automate your most frequent requests. 
           </p>
           
           <div className="mt-12 flex flex-wrap justify-center gap-4 sm:gap-6">
-             <div className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-md rounded-2xl p-6 min-w-[110px] sm:min-w-[130px] border border-white/10 shadow-2xl">
-               <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">14</span>
-               <span className="mt-2 text-sm font-medium tracking-wide text-blue-200/80 uppercase">Days</span>
+             <div className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-md rounded-2xl p-6 min-w-[160px] sm:min-w-[200px] border border-white/10 shadow-2xl">
+               <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">&lt; 2m</span>
+               <span className="mt-2 sm:mt-3 text-xs sm:text-sm font-medium tracking-wide text-blue-200/80 uppercase">Avg Response Time</span>
              </div>
-             <div className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-md rounded-2xl p-6 min-w-[110px] sm:min-w-[130px] border border-white/10 shadow-2xl">
-               <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">08</span>
-               <span className="mt-2 text-sm font-medium tracking-wide text-blue-200/80 uppercase">Hours</span>
+             <div className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-md rounded-2xl p-6 min-w-[160px] sm:min-w-[200px] border border-white/10 shadow-2xl">
+               <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">24/7</span>
+               <span className="mt-2 sm:mt-3 text-xs sm:text-sm font-medium tracking-wide text-blue-200/80 uppercase">AI Availability</span>
              </div>
-             <div className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-md rounded-2xl p-6 min-w-[110px] sm:min-w-[130px] border border-white/10 shadow-2xl">
-               <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">45</span>
-               <span className="mt-2 text-sm font-medium tracking-wide text-blue-200/80 uppercase">Minutes</span>
+             <div className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-md rounded-2xl p-6 min-w-[160px] sm:min-w-[200px] border border-white/10 shadow-2xl">
+               <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">100%</span>
+               <span className="mt-2 sm:mt-3 text-xs sm:text-sm font-medium tracking-wide text-blue-200/80 uppercase">Automated Routing</span>
              </div>
           </div>
         </div>
