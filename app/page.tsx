@@ -125,17 +125,13 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-14 overflow-hidden rounded-t-[2.5rem] border border-border/50 shadow-2xl shadow-primary/10 dark:border-white/10">
-            <div className="relative px-4 pt-10 pb-8 sm:px-8 lg:px-12 flex justify-center">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-56" />
-
-              <div className="relative z-10 w-full max-w-5xl rounded-2xl border border-white/20 shadow-2xl overflow-hidden bg-white/5 backdrop-blur-sm">
-                <img
-                  src="/hero-image.png"
-                  alt="OneHelp Dashboard"
-                  className="w-full h-auto object-cover"
-                />
-              </div>
+          <div className="mt-14 flex justify-center w-full px-4 sm:px-6 lg:px-8">
+            <div className="relative z-10 w-full max-w-6xl xl:max-w-7xl drop-shadow-2xl">
+              <img
+                src="/hero-image.png"
+                alt="OneHelp Dashboard"
+                className="w-full h-auto object-contain"
+              />
             </div>
           </div>
         </div>
