@@ -23,31 +23,33 @@ const fetchMockTickets = async (): Promise<Ticket[]> => {
   await new Promise((resolve) => setTimeout(resolve, 600));
   
   return [
-    { id: "1", ticket_no: "NET-404", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "In Progress", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Connectivity Loss", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
-    { id: "2", ticket_no: "NET-405", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "Resolved", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Slow Speed", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
-    { id: "3", ticket_no: "NET-406", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Resolved", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "Mobile Data Issue", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
-    { id: "4", ticket_no: "NET-407", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Resolved", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "TV Service", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
-    { id: "5", ticket_no: "NET-408", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Open", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "Mobile Data Issue", category: "Network" }, internal_notes: null, created_at: "2022-01-12T00:00:00.000Z" },
-    { id: "6", ticket_no: "NET-409", customer_id: "c1", vendor_id: "v3", vendor_name: "SLTMobitel", status: "Resolved", issue_data: { vendor: "SLTMobitel", connection_number: "N/A", issue_summary: "Slow Internet Speed", category: "Network" }, internal_notes: null, created_at: "2022-01-12T00:00:00.000Z" },
-    { id: "7", ticket_no: "NET-410", customer_id: "c1", vendor_id: "v3", vendor_name: "SLTMobitel", status: "Resolved", issue_data: { vendor: "SLTMobitel", connection_number: "N/A", issue_summary: "Connectivity Loss", category: "Network" }, internal_notes: null, created_at: "2022-01-12T00:00:00.000Z" },
-    { id: "8", ticket_no: "NET-411", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "In Progress", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Router Replacement", category: "Network" }, internal_notes: null, created_at: "2022-01-11T00:00:00.000Z" },
-    { id: "9", ticket_no: "NET-412", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Resolved", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "Billing Issue", category: "Billing" }, internal_notes: null, created_at: "2022-01-11T00:00:00.000Z" },
-    { id: "10", ticket_no: "NET-413", customer_id: "c1", vendor_id: "v3", vendor_name: "SLTMobitel", status: "Open", issue_data: { vendor: "SLTMobitel", connection_number: "N/A", issue_summary: "Line Disconnection", category: "Network" }, internal_notes: null, created_at: "2022-01-10T00:00:00.000Z" },
-    { id: "11", ticket_no: "NET-414", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "Resolved", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Package Upgrade", category: "Billing" }, internal_notes: null, created_at: "2022-01-10T00:00:00.000Z" },
-    { id: "12", ticket_no: "NET-415", customer_id: "c1", vendor_id: "v4", vendor_name: "Hutch", status: "In Progress", issue_data: { vendor: "Hutch", connection_number: "N/A", issue_summary: "Coverage Issue", category: "Network" }, internal_notes: null, created_at: "2022-01-09T00:00:00.000Z" },
+    { id: "1", ticket_no: "NET-404", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "Processing", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Connectivity Loss", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
+    { id: "2", ticket_no: "NET-405", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "Addressed", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Slow Speed", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
+    { id: "3", ticket_no: "NET-406", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Addressed", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "Mobile Data Issue", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
+    { id: "4", ticket_no: "NET-407", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Addressed", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "TV Service", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z" },
+    { id: "5", ticket_no: "NET-408", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Pending", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "Mobile Data Issue", category: "Network" }, internal_notes: null, created_at: "2022-01-12T00:00:00.000Z" },
+    { id: "6", ticket_no: "NET-409", customer_id: "c1", vendor_id: "v3", vendor_name: "SLTMobitel", status: "Addressed", issue_data: { vendor: "SLTMobitel", connection_number: "N/A", issue_summary: "Slow Internet Speed", category: "Network" }, internal_notes: null, created_at: "2022-01-12T00:00:00.000Z" },
+    { id: "7", ticket_no: "NET-410", customer_id: "c1", vendor_id: "v3", vendor_name: "SLTMobitel", status: "Addressed", issue_data: { vendor: "SLTMobitel", connection_number: "N/A", issue_summary: "Connectivity Loss", category: "Network" }, internal_notes: null, created_at: "2022-01-12T00:00:00.000Z" },
+    { id: "8", ticket_no: "NET-411", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "Processing", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Router Replacement", category: "Network" }, internal_notes: null, created_at: "2022-01-11T00:00:00.000Z" },
+    { id: "9", ticket_no: "NET-412", customer_id: "c1", vendor_id: "v2", vendor_name: "Airtel", status: "Addressed", issue_data: { vendor: "Airtel", connection_number: "N/A", issue_summary: "Billing Issue", category: "Billing" }, internal_notes: null, created_at: "2022-01-11T00:00:00.000Z" },
+    { id: "10", ticket_no: "NET-413", customer_id: "c1", vendor_id: "v3", vendor_name: "SLTMobitel", status: "Pending", issue_data: { vendor: "SLTMobitel", connection_number: "N/A", issue_summary: "Line Disconnection", category: "Network" }, internal_notes: null, created_at: "2022-01-10T00:00:00.000Z" },
+    { id: "11", ticket_no: "NET-414", customer_id: "c1", vendor_id: "v1", vendor_name: "Dialog", status: "Addressed", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Package Upgrade", category: "Billing" }, internal_notes: null, created_at: "2022-01-10T00:00:00.000Z" },
+    { id: "12", ticket_no: "NET-415", customer_id: "c1", vendor_id: "v4", vendor_name: "Hutch", status: "Processing", issue_data: { vendor: "Hutch", connection_number: "N/A", issue_summary: "Coverage Issue", category: "Network" }, internal_notes: null, created_at: "2022-01-09T00:00:00.000Z" },
   ];
 };
 
 const statusBadgeStyles: Record<TicketStatus, string> = {
-  "In Progress": "bg-slate-100 text-slate-600 border border-slate-200/60",
-  "Resolved": "bg-emerald-50 text-emerald-700 border border-emerald-100/60",
-  "Open": "bg-blue-50 text-blue-700 border border-blue-100/60",
+  "Processing": "bg-slate-100 text-slate-600 border border-slate-200/60",
+  "Addressed": "bg-emerald-50 text-emerald-700 border border-emerald-100/60",
+  "Pending": "bg-blue-50 text-blue-700 border border-blue-100/60",
+  "Declined": "bg-red-50 text-red-700 border border-red-100/60",
 };
 
 const statusDotStyles: Record<TicketStatus, string> = {
-  "In Progress": "bg-slate-400",
-  "Resolved": "bg-emerald-500",
-  "Open": "bg-blue-500",
+  "Processing": "bg-slate-400",
+  "Addressed": "bg-emerald-500",
+  "Pending": "bg-blue-500",
+  "Declined": "bg-red-500",
 };
 
 export default function ViewTicketsPage() {

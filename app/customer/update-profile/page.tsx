@@ -17,7 +17,7 @@ export default function SettingsPage() {
             <label className="text-sm text-muted-foreground">Name</label>
             <input
               className="w-full border rounded-md p-2 mt-1"
-              defaultValue="Oliva"
+              defaultValue="Hamdhan"
             />
           </div>
 
@@ -25,7 +25,7 @@ export default function SettingsPage() {
             <label className="text-sm text-muted-foreground">Email address</label>
             <input
               className="w-full border rounded-md p-2 mt-1"
-              defaultValue="shajanthan@gmail.com"
+              defaultValue="hamdhan@gmail.com"
             />
           </div>
 

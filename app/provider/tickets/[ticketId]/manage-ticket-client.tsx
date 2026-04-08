@@ -27,7 +27,7 @@ const TECHNICIANS = [
 
 export default function ManageTicketClient({ ticketId }: { ticketId: string }) {
   const [ticket, setTicket] = useState<Ticket | null>(null);
-  const [status, setStatus] = useState<TicketStatus>("Open");
+  const [status, setStatus] = useState<TicketStatus>("Pending");
   const [notes, setNotes] = useState("");
   const [savingStatus, setSavingStatus] = useState(false);
   const [savingNotes, setSavingNotes] = useState(false);
@@ -149,9 +149,10 @@ export default function ManageTicketClient({ ticketId }: { ticketId: string }) {
               className="h-9 w-[160px] rounded-xl"
               disabled={savingStatus}
             >
-              <option value="Open">Pending</option>
-              <option value="In Progress">Processing</option>
-              <option value="Resolved">Resolved</option>
+              <option value="Pending">Pending</option>
+              <option value="Processing">Processing</option>
+              <option value="Addressed">Addressed</option>
+              <option value="Declined">Declined</option>
             </SelectNative>
           </div>
         </div>

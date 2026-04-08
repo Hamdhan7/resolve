@@ -22,7 +22,14 @@ export default function SignInPage() {
         className="space-y-5" 
         onSubmit={(e) => {
           e.preventDefault();
-          router.push("/customer");
+          const email = e.currentTarget.email.value.toLowerCase();
+          if (email.includes('provider') || email.includes('slt') || email.includes('dialog') || email.includes('vendor')) {
+            router.push("/provider/dashboard");
+          } else if (email.includes('admin')) {
+            router.push("/admin");
+          } else {
+            router.push("/customer");
+          }
         }}
       >
         <div className="space-y-2">

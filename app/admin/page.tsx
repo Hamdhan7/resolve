@@ -10,30 +10,30 @@ type CompanyRequestRow = {
     email: string;
     regNo: string;
     requestedDate: string;
-    status: "Pending" | "Approved" | "Rejected";
+    status: "Pending Verification" | "Approved" | "Rejected";
 };
 
 const companyRequests: CompanyRequestRow[] = [
     {
-        companyName: "Dialog Axiata PLC",
-        email: "admin@dialog.lk",
+        companyName: "Hutch Telecommunications",
+        email: "admin@hutch.lk",
         regNo: "PV-22045",
         requestedDate: "2026-03-08",
-        status: "Pending",
+        status: "Pending Verification",
     },
     {
-        companyName: "Sri Lanka Telecom PLC",
-        email: "partnerships@slt.lk",
+        companyName: "Lanka Bell",
+        email: "partnerships@lankabell.lk",
         regNo: "PB-10412",
         requestedDate: "2026-03-10",
-        status: "Approved",
+        status: "Pending Verification",
     },
     {
-        companyName: "Hutch Lanka Ltd",
-        email: "ops@hutch.lk",
+        companyName: "FastNet Solutions",
+        email: "ops@fastnetsol.lk",
         regNo: "PV-88701",
         requestedDate: "2026-03-12",
-        status: "Rejected",
+        status: "Pending Verification",
     },
 ];
 
