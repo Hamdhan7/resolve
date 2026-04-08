@@ -97,8 +97,8 @@ function buildPageItems(current: number, total: number) {
 export default function ProviderDashboardClient() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [query, setQuery] = useState("");
-  const [startDate, setStartDate] = useState("2022-01-06");
-  const [endDate, setEndDate] = useState("2022-01-13");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [statusFilters, setStatusFilters] = useState<Record<TicketStatus, boolean>>(emptyStatusFilters);
   const [page, setPage] = useState(1);
   const router = useRouter();

@@ -275,10 +275,12 @@ export default function CustomerPage() {
                                         <SelectValue placeholder="Select your service provider" />
                                       </SelectTrigger>
                                       <SelectContent>
-                                        <SelectItem value="slt_fibre">SLT Fibre</SelectItem>
-                                        <SelectItem value="dialog">Dialog</SelectItem>
-                                        <SelectItem value="mobitel">Mobitel</SelectItem>
-                                        <SelectItem value="hutch">Hutch</SelectItem>
+                                        <SelectItem value="slt_fibre">Telecom - SLT Fibre</SelectItem>
+                                        <SelectItem value="dialog">Telecom - Dialog</SelectItem>
+                                        <SelectItem value="mobitel">Telecom - Mobitel</SelectItem>
+                                        <SelectItem value="hutch">Telecom - Hutch</SelectItem>
+                                        <SelectItem value="ceb">Utility - CEB (Electricity)</SelectItem>
+                                        <SelectItem value="nwsdb">Utility - NWSDB (Water)</SelectItem>
                                       </SelectContent>
                                     </Select>
                                </div>
@@ -294,21 +296,24 @@ export default function CustomerPage() {
                                
                                <div className="space-y-2.5 flex flex-col">
                                    <label className="text-sm font-semibold text-slate-700">Issue Category:</label>
-                                   <Select onValueChange={(val) => setManualForm(prev => ({...prev, vendor: val}))}>
+                                   <Select onValueChange={(val) => setManualForm(prev => ({...prev, category: val}))}>
                                       <SelectTrigger className="w-full bg-white h-11 text-[13.5px] border-slate-300 shadow-sm focus:ring-1 focus:ring-slate-400 font-medium text-slate-700">
                                         <SelectValue placeholder="Select your issue category" />
                                       </SelectTrigger>
                                       <SelectContent>
                                         <SelectItem value="internet">Internet Connectivity</SelectItem>
                                         <SelectItem value="voice">Voice/Landline</SelectItem>
-                                        <SelectItem value="billing">Billing</SelectItem>
-                                        <SelectItem value="hardware">Router Hardware</SelectItem>
+                                        <SelectItem value="billing">Billing & Payments</SelectItem>
+                                        <SelectItem value="hardware">Hardware / Router Fault</SelectItem>
+                                        <SelectItem value="power_outage">Power Outage / Line Fault</SelectItem>
+                                        <SelectItem value="water_leak">Water Leak / Supply Drop</SelectItem>
+                                        <SelectItem value="meter_issue">Smart Meter Issue</SelectItem>
                                       </SelectContent>
                                     </Select>
                                </div>
 
                                <div className="space-y-4 pt-1">
-                                   <label className="text-sm font-semibold text-slate-700">Router Status:</label>
+                                   <label className="text-sm font-semibold text-slate-700">Device/Meter Status (If applicable):</label>
                                    <RadioGroup defaultValue="normal" onValueChange={(val) => setManualForm(prev => ({...prev, status: val}))} className="flex flex-wrap gap-8">
                                         <div className="flex items-center space-x-3 cursor-pointer">
                                             <RadioGroupItem value="normal" id="r1" className="border-slate-300 text-[#1a202c] focus:ring-[#1a202c] shadow-sm h-4 w-4" />
@@ -316,15 +321,15 @@ export default function CustomerPage() {
                                         </div>
                                         <div className="flex items-center space-x-3 cursor-pointer">
                                             <RadioGroupItem value="los" id="r2" className="border-slate-300 text-[#1a202c] focus:ring-[#1a202c] shadow-sm h-4 w-4" />
-                                            <label htmlFor="r2" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">LOS Light Blinking Red</label>
+                                            <label htmlFor="r2" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">LOS Blinking Red (Router)</label>
                                         </div>
                                         <div className="flex items-center space-x-3 cursor-pointer">
                                             <RadioGroupItem value="off" id="r3" className="border-slate-300 text-[#1a202c] focus:ring-[#1a202c] shadow-sm h-4 w-4" />
-                                            <label htmlFor="r3" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">All Lights Off</label>
+                                            <label htmlFor="r3" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">No Power / Display Blank</label>
                                         </div>
                                         <div className="flex items-center space-x-3 cursor-pointer">
-                                            <RadioGroupItem value="wifi" id="r4" className="border-slate-300 text-[#1a202c] focus:ring-[#1a202c] shadow-sm h-4 w-4" />
-                                            <label htmlFor="r4" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">WiFi Connected but No Internet</label>
+                                            <RadioGroupItem value="not_applicable" id="r4" className="border-slate-300 text-[#1a202c] focus:ring-[#1a202c] shadow-sm h-4 w-4" />
+                                            <label htmlFor="r4" className="cursor-pointer text-[13.5px] text-slate-600 font-medium">Not Applicable</label>
                                         </div>
                                    </RadioGroup>
                                </div>

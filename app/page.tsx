@@ -63,6 +63,8 @@ const providers = [
   { name: "Dialog", className: "text-red-500" },
   { name: "airtel", className: "text-red-500 italic font-normal" },
   { name: "SLTMOBITEL", className: "text-blue-700" },
+  { name: "CEB", className: "text-amber-500" },
+  { name: "NWSDB", className: "text-cyan-600" },
 ] as const;
 
 const rightContent = () => {
@@ -106,7 +108,7 @@ export default function Home() {
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-              Report internet issues, billing disputes, and signal drops for Dialog, SLT, Mobitel, and Hutch instantly using our highly reliable support assistant.
+              Report internet issues, power outages, water supply drops, and billing disputes for Dialog, SLT, Mobitel, Hutch, CEB, and NWSDB instantly using our highly reliable support assistant.
             </p>
 
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">

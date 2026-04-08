@@ -5,13 +5,13 @@ import { Ticket } from "@/lib/models/ticket";
 
 const rows: Ticket[] = [
   {
-    id: "1", ticket_no: "TK-1001", customer_id: "c1", vendor_id: "v1", customer_name: "Nadeesha Perera", vendor_name: "Dialog", status: "Open", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Frequent fiber disconnections", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z"
+    id: "1", ticket_no: "TK-1001", customer_id: "c1", vendor_id: "v1", customer_name: "Nadeesha Perera", vendor_name: "Dialog", status: "Pending", issue_data: { vendor: "Dialog", connection_number: "N/A", issue_summary: "Frequent fiber disconnections", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z"
   },
   {
-    id: "2", ticket_no: "TK-1002", customer_id: "c2", vendor_id: "v2", customer_name: "Kasun Fernando", vendor_name: "SLT", status: "In Progress", issue_data: { vendor: "SLT", connection_number: "N/A", issue_summary: "Billing dispute on monthly package", category: "Billing" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z"
+    id: "2", ticket_no: "TK-1002", customer_id: "c2", vendor_id: "v2", customer_name: "Kasun Fernando", vendor_name: "SLT", status: "Processing", issue_data: { vendor: "SLT", connection_number: "N/A", issue_summary: "Billing dispute on monthly package", category: "Billing" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z"
   },
   {
-    id: "3", ticket_no: "TK-1003", customer_id: "c3", vendor_id: "v4", customer_name: "Aisha Rahman", vendor_name: "Hutch", status: "Resolved", issue_data: { vendor: "Hutch", connection_number: "N/A", issue_summary: "4G signal drops in evening", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z"
+    id: "3", ticket_no: "TK-1003", customer_id: "c3", vendor_id: "v4", customer_name: "Aisha Rahman", vendor_name: "Hutch", status: "Addressed", issue_data: { vendor: "Hutch", connection_number: "N/A", issue_summary: "4G signal drops in evening", category: "Network" }, internal_notes: null, created_at: "2022-01-13T00:00:00.000Z"
   },
 ];
 
@@ -42,11 +42,11 @@ const columns: DataTableColumn<Ticket>[] = [
     header: "Status",
     cell: (row) => {
       const tone =
-        row.status === "Resolved"
+        row.status === "Addressed"
           ? "bg-emerald-100 text-emerald-700"
-          : row.status === "In Progress"
+          : row.status === "Processing"
             ? "bg-amber-100 text-amber-700"
-            : "bg-rose-100 text-rose-700";
+            : "bg-blue-100 text-blue-700";
 
       return (
         <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${tone}`}>

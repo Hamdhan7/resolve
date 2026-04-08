@@ -13,6 +13,8 @@ export const MOCK_VENDORS: Vendor[] = [
     { id: 'v2-uuid', name: 'SLT Mobitel', code: 'SLTM' },
     { id: 'v3-uuid', name: 'Airtel', code: 'ATL' },
     { id: 'v4-uuid', name: 'SLT Fibre', code: 'SLTF' },
+    { id: 'v5-uuid', name: 'CEB', code: 'CEB' },
+    { id: 'v6-uuid', name: 'NWSDB', code: 'NWSD' },
 ];
 
 export const MOCK_CURRENT_USER: Profile = {
@@ -79,6 +81,86 @@ export const MOCK_TICKETS: Ticket[] = [
         },
         internal_notes: null,
         created_at: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
+    },
+    {
+        id: 'ticket-4',
+        ticket_no: 'NET-407',
+        customer_id: 'user1-uuid',
+        vendor_id: 'v1-uuid',
+        vendor_name: 'Dialog',
+        status: 'Declined',
+        issue_data: {
+            vendor: 'Dialog',
+            connection_number: '0779998888',
+            issue_summary: 'Billing Dispute',
+            category: 'Billing'
+        },
+        internal_notes: 'Duplicate request.',
+        created_at: new Date(Date.now() - 345600000).toISOString(), // 4 days ago
+    },
+    {
+        id: 'ticket-5',
+        ticket_no: 'NET-408',
+        customer_id: 'user1-uuid',
+        vendor_id: 'v3-uuid',
+        vendor_name: 'Airtel',
+        status: 'Pending',
+        issue_data: {
+            vendor: 'Airtel',
+            connection_number: '0754443333',
+            issue_summary: 'No Signal at Home',
+            category: 'Network Issue'
+        },
+        internal_notes: null,
+        created_at: new Date(Date.now() - 400000000).toISOString(),
+    },
+    {
+        id: 'ticket-6',
+        ticket_no: 'NET-409',
+        customer_id: 'user2-uuid',
+        vendor_id: 'v4-uuid',
+        vendor_name: 'SLT Fibre',
+        status: 'Processing',
+        issue_data: {
+            vendor: 'SLT Fibre',
+            connection_number: '011-3004000',
+            issue_summary: 'Router Restarting Frequently',
+            category: 'Hardware'
+        },
+        internal_notes: 'Investigating router logs.',
+        created_at: new Date(Date.now() - 500000000).toISOString(),
+    },
+    {
+        id: 'ticket-7',
+        ticket_no: 'PWR-101',
+        customer_id: 'user1-uuid',
+        vendor_id: 'v5-uuid',
+        vendor_name: 'CEB',
+        status: 'Pending',
+        issue_data: {
+            vendor: 'CEB',
+            connection_number: '54223399',
+            issue_summary: 'Partial power outage in the street',
+            category: 'Power Outage'
+        },
+        internal_notes: null,
+        created_at: new Date(Date.now() - 3600000).toISOString(), 
+    },
+    {
+        id: 'ticket-8',
+        ticket_no: 'WTR-202',
+        customer_id: 'user1-uuid',
+        vendor_id: 'v6-uuid',
+        vendor_name: 'NWSDB',
+        status: 'Processing',
+        issue_data: {
+            vendor: 'NWSDB',
+            connection_number: 'W/99/88/77',
+            issue_summary: 'Major water leak near main gate',
+            category: 'Water Leak'
+        },
+        internal_notes: 'Technician dispatched to site.',
+        created_at: new Date(Date.now() - 7200000).toISOString(),
     },
 ];
 
