@@ -10,7 +10,8 @@ import {
   Shield,
   LayoutDashboard,
   MessageSquareText,
-  Ticket
+  Ticket,
+  Bot
 } from "lucide-react";
 
 import Footer from "@/components/layout/footer";
@@ -64,38 +65,20 @@ const providers = [
   { name: "SLTMOBITEL", className: "text-blue-700" },
 ] as const;
 
-const orbitNodeClasses = [
-  "left-1/2 top-0 -translate-x-1/2",
-  "right-8 top-8",
-  "right-0 top-1/2 -translate-y-1/2",
-  "right-8 bottom-8",
-  "bottom-0 left-1/2 -translate-x-1/2",
-  "bottom-8 left-8",
-  "left-0 top-1/2 -translate-y-1/2",
-  "left-8 top-8",
-] as const;
-
-const figurePalette = [
-  { head: "bg-orange-200", body: "bg-emerald-600" },
-  { head: "bg-orange-300", body: "bg-orange-500" },
-  { head: "bg-orange-300", body: "bg-orange-500" },
-  { head: "bg-stone-400", body: "bg-emerald-600" },
-] as const;
-
 const rightContent = () => {
   return (
     <>
       <Button asChild variant="ghost" className="rounded-sm hidden sm:inline-flex">
-        <Link href="/provider/dashboard" className="text-[#667085]">
+        <Link href="/provider/dashboard" className="text-[#667085] font-semibold hover:text-slate-900">
           Provider Portal
         </Link>
       </Button>
       <Button asChild variant="ghost" className="rounded-sm">
-        <Link href="/sign-in" className="text-[#667085] ">
+        <Link href="/sign-in" className="text-[#667085] font-semibold hover:text-slate-900">
           Log in
         </Link>
       </Button>
-      <Button asChild className="rounded-sm px-5 text-white bg-[#122841]">
+      <Button asChild className="rounded-sm px-5 text-white bg-blue-600 hover:bg-blue-700 shadow-md">
         <Link href="/sign-up">Sign up</Link>
       </Button>
     </>
@@ -104,100 +87,155 @@ const rightContent = () => {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white text-foreground">
+    <main className="min-h-screen bg-[#fafcff] text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900">
       <Navbar rightContent={rightContent()} />
 
-      <section className="relative overflow-hidden border-b border-border/60 bg-white">
-        {/* Dotted Background Pattern */}
-        <div 
-          className="absolute inset-0 z-0 opacity-[0.3]" 
-          style={{ backgroundImage: 'radial-gradient(#94a3b8 1px, transparent 1px)', backgroundSize: '24px 24px' }}
-        />
+      <section className="relative overflow-hidden pt-20 pb-20 border-b border-border/40">
+        {/* Subtle Gradient Background */}
+        <div className="absolute top-0 right-0 h-[600px] w-[600px] rounded-full bg-blue-400/10 blur-[120px] -z-10 mix-blend-multiply pointer-events-none"></div>
+        <div className="absolute top-40 left-0 h-[500px] w-[500px] rounded-full bg-cyan-400/10 blur-[100px] -z-10 mix-blend-multiply pointer-events-none"></div>
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 pt-16 lg:px-10 lg:pt-20">
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 text-center flex flex-col items-center">
+          
           <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-balance text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl lg:leading-[1.1]">
-              No More Waiting on Hold.
-              <br />
-              One Solution for Everything.
+            <h1 className="text-balance text-5xl font-extrabold tracking-tight sm:text-6xl xl:text-[4.2rem] xl:leading-[1.05] text-slate-900">
+              No More Waiting on Hold.<br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
+                One Solution for Everything.
+              </span>
             </h1>
 
-            <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-              Report internet issues, billing disputes, and signal drops for
-              Dialog, SLT, Mobitel, and Hutch instantly using our multilingual
-              AI assistant.
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+              Report internet issues, billing disputes, and signal drops for Dialog, SLT, Mobitel, and Hutch instantly using our highly reliable support assistant.
             </p>
 
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="min-w-56 rounded-sm hover:text-white"
-              >
-                <Link href="/customer/view">Check Existing Ticket</Link>
-              </Button>
-              <Button asChild size="lg" className="min-w-56 rounded-sm bg-[#122841] text-white hover:bg-[#0d1d2f]">
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Button asChild size="lg" className="min-w-56 rounded-full bg-blue-600 text-white hover:bg-blue-700 shadow-xl shadow-blue-600/20 px-8 py-6 text-[15px] font-semibold transition-transform hover:scale-105">
                 <Link href="/customer">
                   Start Complaint Assistant
                   <ArrowRight className="ml-2 size-5" />
                 </Link>
               </Button>
+              <Button asChild variant="outline" size="lg" className="min-w-56 rounded-full border-slate-200 text-slate-700 shadow-sm hover:border-slate-300 hover:bg-white px-8 py-6 text-[15px] font-semibold transition-all">
+                <Link href="/customer/view">Check Existing Ticket</Link>
+              </Button>
             </div>
           </div>
 
-          <div className="mt-14 flex justify-center w-full px-4 sm:px-6 lg:px-8">
-            <div className="relative z-10 w-full max-w-6xl xl:max-w-7xl drop-shadow-2xl">
-              <img
-                src="/hero-image.png"
-                alt="OneHelp Dashboard"
-                className="w-full h-auto object-contain"
-              />
+          <div className="mt-16 w-full max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="p-4 bg-white/40 backdrop-blur-3xl rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white">
+               {/* Simulated Chat Interface */}
+               <div className="bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-2xl flex flex-col min-h-[400px]">
+                  <div className="px-6 py-4 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
+                    <div className="flex items-center gap-3">
+                       <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center">
+                          <Bot className="size-5" />
+                       </div>
+                       <div>
+                          <div className="font-semibold text-[15px] text-slate-800 tracking-tight">Resolv Assistant</div>
+                          <div className="text-[12px] text-green-600 font-medium flex items-center gap-1.5">
+                             <span className="w-2 h-2 rounded-full bg-green-500 inline-block animate-pulse"></span>
+                             Online
+                          </div>
+                       </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex-1 p-6 flex flex-col gap-5 bg-slate-50/20 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+                     {/* Chat Bubble AI */}
+                     <div className="flex w-full items-end gap-2 pr-12">
+                       <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mb-1">
+                          <Bot className="size-4" />
+                       </div>
+                       <div className="bg-white border border-slate-100 shadow-sm p-4 rounded-2xl rounded-bl-sm text-[14.5px] text-slate-700 leading-relaxed font-medium">
+                         Hi Hamdhan! I'm sorry to hear you're experiencing connectivity loss. Are the lights on your router blinking red?
+                       </div>
+                     </div>
+                     {/* Chat Bubble User */}
+                     <div className="flex w-full items-end gap-2 justify-end pl-12 mt-2">
+                       <div className="bg-blue-600 text-white shadow-md p-4 rounded-2xl rounded-br-sm text-[14.5px] leading-relaxed font-medium">
+                         Yes, the LOS light is blinking red on my SLT Fibre router.
+                       </div>
+                     </div>
+                     {/* Chat Bubble AI Action */}
+                     <div className="flex w-full items-end gap-2 pr-12 mt-2">
+                       <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mb-1">
+                          <Bot className="size-4" />
+                       </div>
+                       <div className="bg-white border border-slate-100 shadow-sm p-4 rounded-2xl rounded-bl-sm text-[14.5px] text-slate-700 leading-relaxed font-medium">
+                         Understood. I have drafted a ticket for <strong className="text-slate-900 font-bold">SLT Fibre</strong> regarding a physical line fault. A local technician is being alerted.
+                         
+                         <div className="mt-4 p-4 border border-blue-100 bg-blue-50/50 rounded-xl space-y-2">
+                            <div className="flex justify-between items-center"><span className="text-sm font-semibold text-slate-500">Ticket ID</span><span className="text-sm font-bold text-blue-700">NET-404</span></div>
+                            <div className="flex justify-between items-center"><span className="text-sm font-semibold text-slate-500">Status</span><span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-700">Processing</span></div>
+                         </div>
+                       </div>
+                     </div>
+                  </div>
+               </div>
             </div>
+          </div>
+          
+        </div>
+      </section>
+
+      {/* Brands Section moved directly beneath Hero for immediate Trust Building */}
+      <section className="bg-white py-10 border-b border-slate-100">
+        <div className="mx-full max-w-full px-6 text-center lg:px-10">
+          <p className="mb-6 text-sm font-semibold tracking-wider text-slate-400 uppercase">Trusted Provider Integrations</p>
+          <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-14 opacity-80 grayscale transition hover:grayscale-0">
+            {providers.map((provider) => (
+              <div
+                key={provider.name}
+                className="px-2"
+              >
+                <span
+                  className={`text-2xl font-extrabold tracking-tight ${provider.className}`}
+                >
+                  {provider.name}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#0a1526] py-20 text-white sm:py-28">
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-        <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-blue-600/20 blur-[100px]"></div>
-        <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-cyan-600/20 blur-[100px]"></div>
-        
-        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 text-center">
-          <div className="mb-6 inline-flex uppercase tracking-wider items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-semibold text-blue-300 backdrop-blur-md">
-            Available Now
-          </div>
-          <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-5xl text-white">
-            Transform Your Support Flow
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-blue-100/70">
-            Join the forward-thinking teams that are delivering exceptional experiences. Consolidate your communication and let intelligent AI automate your most frequent requests. 
-          </p>
-          
-          <div className="mt-12 flex flex-wrap justify-center gap-4 sm:gap-6">
-             <div className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-md rounded-2xl p-6 min-w-[160px] sm:min-w-[200px] border border-white/10 shadow-2xl">
-               <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">&lt; 2m</span>
-               <span className="mt-2 sm:mt-3 text-xs sm:text-sm font-medium tracking-wide text-blue-200/80 uppercase">Avg Response Time</span>
-             </div>
-             <div className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-md rounded-2xl p-6 min-w-[160px] sm:min-w-[200px] border border-white/10 shadow-2xl">
-               <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">24/7</span>
-               <span className="mt-2 sm:mt-3 text-xs sm:text-sm font-medium tracking-wide text-blue-200/80 uppercase">AI Availability</span>
-             </div>
-             <div className="flex flex-col items-center justify-center bg-white/5 backdrop-blur-md rounded-2xl p-6 min-w-[160px] sm:min-w-[200px] border border-white/10 shadow-2xl">
-               <span className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">100%</span>
-               <span className="mt-2 sm:mt-3 text-xs sm:text-sm font-medium tracking-wide text-blue-200/80 uppercase">Automated Routing</span>
-             </div>
-          </div>
-        </div>
+      {/* Light-Theme Optimized "Transform Your Support Flow" Section */}
+      <section className="py-24 sm:py-32 bg-slate-50 overflow-hidden relative">
+         <div className="mx-auto max-w-7xl px-6 lg:px-10 relative">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="text-sm font-bold tracking-widest uppercase leading-7 text-blue-600 mb-2">Automated Resolutions</h2>
+              <p className="mt-2 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
+                Transform Your Support Flow
+              </p>
+              <p className="mt-6 text-lg leading-8 text-slate-600">
+                Join the forward-thinking teams delivering exceptional experiences. Consolidate your communication and let intelligent systems automate your most frequent requests.
+              </p>
+            </div>
+            
+            <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+               <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col justify-center text-center group">
+                 <span className="text-6xl font-extrabold text-blue-600 tracking-tighter group-hover:scale-105 transition-transform">&lt; 2m</span>
+                 <span className="mt-4 text-sm font-bold tracking-widest text-slate-400 uppercase">Avg Response Time</span>
+               </div>
+               <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col justify-center text-center group">
+                 <span className="text-6xl font-extrabold text-blue-600 tracking-tighter group-hover:scale-105 transition-transform">24/7</span>
+                 <span className="mt-4 text-sm font-bold tracking-widest text-slate-400 uppercase">AI Availability</span>
+               </div>
+               <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col justify-center text-center group">
+                 <span className="text-6xl font-extrabold text-blue-600 tracking-tighter group-hover:scale-105 transition-transform">100%</span>
+                 <span className="mt-4 text-sm font-bold tracking-widest text-slate-400 uppercase">Automated Routing</span>
+               </div>
+            </div>
+         </div>
       </section>
 
       <section className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="mx-auto max-w-2xl text-center mb-16 lg:mb-20">
-            <h2 className="text-sm font-bold tracking-widest uppercase leading-7 text-blue-600">Powerful Capabilities</h2>
-            <p className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
+            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
               Everything You Need to Delight Customers
-            </p>
+            </h2>
             <p className="mt-6 text-lg leading-8 text-slate-600">
               Powerful features designed to streamline your support workflow and create exceptional customer experiences across all your channels.
             </p>
@@ -216,10 +254,10 @@ export default function Home() {
                     <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
                       <Icon className="size-7" />
                     </div>
-                    <CardTitle className="text-xl font-bold text-slate-900">{feature.title}</CardTitle>
+                    <CardTitle className="text-xl font-extrabold text-slate-900 tracking-tight">{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-base leading-relaxed text-slate-600">
+                    <CardDescription className="text-[15px] leading-relaxed text-slate-600">
                       {feature.description}
                     </CardDescription>
                   </CardContent>
@@ -227,25 +265,11 @@ export default function Home() {
               );
             })}
           </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-8">
-        <div className="mx-full max-w-full px-6 text-center lg:px-10">
-          <p className="mb-10 text-lg text-muted-foreground">Compatible with</p>
-          <div className="flex flex-wrap items-center justify-center gap-5 lg:gap-8">
-            {providers.map((provider) => (
-              <div
-                key={provider.name}
-                className="px-5 py-4"
-              >
-                <span
-                  className={`text-2xl font-extrabold tracking-wide ${provider.className}`}
-                >
-                  {provider.name}
-                </span>
-              </div>
-            ))}
+          
+          <div className="mt-20 text-center">
+             <Button asChild size="lg" className="rounded-full bg-slate-900 text-white hover:bg-slate-800 px-10 py-6 text-base font-semibold shadow-xl hover:scale-105 transition-transform">
+                <Link href="/sign-up">Start for free today</Link>
+             </Button>
           </div>
         </div>
       </section>

@@ -1,56 +1,50 @@
 import type { Ticket, TicketAssignmentUpdate, TicketNotesUpdate, TicketStatusUpdate } from "@/lib/models/ticket";
 import type { Vendor } from "@/lib/models/vendor";
+import { MOCK_VENDORS, MOCK_TICKETS, updateTicketStatus } from "@/lib/mock-api";
 
-async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(path, {
-    ...init,
-    headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
-  });
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(text || `Request failed: ${res.status}`);
-  }
-
-  return (await res.json()) as T;
+export async function getVendors(): Promise<Vendor[]> {
+  await delay(500);
+  return MOCK_VENDORS;
 }
 
-export function getVendors() {
-  return apiFetch<Vendor[]>("/api/v1/vendors", { cache: "no-store" });
+export async function getTickets(): Promise<Ticket[]> {
+  await delay(500);
+  return MOCK_TICKETS;
 }
 
-export function getTickets() {
-  return apiFetch<Ticket[]>("/api/v1/tickets", { cache: "no-store" });
+export async function getTicket(ticketId: string): Promise<Ticket> {
+  await delay(500);
+  const ticket = MOCK_TICKETS.find((t) => t.id === ticketId || t.ticket_no === ticketId);
+  if (!ticket) throw new Error("Ticket not found");
+  return ticket;
 }
 
-export function getTicket(ticketId: string) {
-  return apiFetch<Ticket>(`/api/v1/tickets/${encodeURIComponent(ticketId)}`, { cache: "no-store" });
+export async function patchTicketStatus(ticketId: string, payload: TicketStatusUpdate): Promise<Ticket> {
+  return updateTicketStatus(ticketId, payload.status);
 }
 
-export function patchTicketStatus(ticketId: string, payload: TicketStatusUpdate) {
-  return apiFetch<Ticket>(`/api/v1/tickets/${encodeURIComponent(ticketId)}/status`, {
-    method: "PATCH",
-    body: JSON.stringify(payload),
-  });
+export async function patchTicketNotes(ticketId: string, payload: TicketNotesUpdate): Promise<Ticket> {
+  await delay(500);
+  const ticket = MOCK_TICKETS.find((t) => t.id === ticketId || t.ticket_no === ticketId);
+  if (!ticket) throw new Error("Ticket not found");
+  ticket.internal_notes = payload.internal_notes;
+  return ticket;
 }
 
-export function patchTicketNotes(ticketId: string, payload: TicketNotesUpdate) {
-  return apiFetch<Ticket>(`/api/v1/tickets/${encodeURIComponent(ticketId)}/notes`, {
-    method: "PATCH",
-    body: JSON.stringify(payload),
-  });
+export async function patchTicketAssignment(ticketId: string, payload: TicketAssignmentUpdate): Promise<Ticket> {
+  await delay(500);
+  const ticket = MOCK_TICKETS.find((t) => t.id === ticketId || t.ticket_no === ticketId);
+  if (!ticket) throw new Error("Ticket not found");
+  ticket.assigned_technician_id = payload.assigned_technician_id;
+  ticket.assigned_technician_name = payload.assigned_technician_name;
+  return ticket;
 }
 
-export function patchTicketAssignment(ticketId: string, payload: TicketAssignmentUpdate) {
-  return apiFetch<Ticket>(`/api/v1/tickets/${encodeURIComponent(ticketId)}/assignment`, {
-    method: "PATCH",
-    body: JSON.stringify(payload),
-  });
+export async function deleteTicket(ticketId: string): Promise<{ ok: true }> {
+  await delay(500);
+  const index = MOCK_TICKETS.findIndex((t) => t.id === ticketId || t.ticket_no === ticketId);
+  if (index !== -1) MOCK_TICKETS.splice(index, 1);
+  return { ok: true };
 }
-
-export function deleteTicket(ticketId: string) {
-  return apiFetch<{ ok: true }>(`/api/v1/tickets/${encodeURIComponent(ticketId)}`, {
-    method: "DELETE",
-  });
-}
-

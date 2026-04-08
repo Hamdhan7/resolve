@@ -27,7 +27,7 @@ export default async function ManageTicketPage({
       />
 
       <section className="mx-auto w-full max-w-7xl flex-1 px-6 py-10 lg:px-10">
-        <p className="mb-6 text-sm text-muted-foreground">OneHelp | Provider Portal</p>
+        <p className="mb-6 text-sm text-muted-foreground">Resolv.lk | Provider Portal</p>
         <ManageTicketClient ticketId={ticketId} />
       </section>
 

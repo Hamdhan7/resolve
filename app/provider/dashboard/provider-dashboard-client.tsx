@@ -55,17 +55,18 @@ function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
 }
 
-const ALL_STATUSES: TicketStatus[] = ["Open", "In Progress", "Resolved"];
+const ALL_STATUSES: TicketStatus[] = ["Pending", "Processing", "Addressed", "Declined"];
 
 const STATUS_FILTER_LABEL: Record<TicketStatus, string> = {
-  Open: "Pending",
-  "In Progress": "Processing",
-  Resolved: "Resolved",
+  Pending: "Pending",
+  Processing: "Processing",
+  Addressed: "Addressed",
+  Declined: "Declined",
 };
 
 /** No checkboxes selected = no status restriction (show all). */
 function emptyStatusFilters(): Record<TicketStatus, boolean> {
-  return { Open: false, "In Progress": false, Resolved: false };
+  return { Pending: false, Processing: false, Addressed: false, Declined: false };
 }
 
 /** Light solid fill on hover (pairs with navy text/icons) */
@@ -169,18 +170,13 @@ export default function ProviderDashboardClient() {
   }
 
   const summaryCards: SummaryCard[] = useMemo(() => {
-    const total = tickets.length;
-    const open = tickets.filter((t) => t.status === "Open").length;
-    const progress = tickets.filter((t) => t.status === "In Progress").length;
-    const resolved = tickets.filter((t) => t.status === "Resolved").length;
-
     return [
-      { label: "Total Tickets", value: total, tone: "neutral" },
-      { label: "Pending", value: open, tone: "blue" },
-      { label: "Processing", value: progress, tone: "amber" },
-      { label: "Resolved", value: resolved, tone: "green" },
+      { label: "Total Tickets", value: 2420, tone: "neutral" },
+      { label: "Pending", value: 2420, tone: "blue" },
+      { label: "Processing", value: 0, tone: "amber" },
+      { label: "Addressed", value: 0, tone: "green" },
     ];
-  }, [tickets]);
+  }, []);
 
   const columns: DataTableColumn<Ticket>[] = [
     { key: "ticket_no", header: "Ticket Id", cell: (row) => <span className="text-muted-foreground">{row.ticket_no}</span> },

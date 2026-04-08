@@ -26,7 +26,7 @@ export default function ProviderDashboardPage() {
 
       <section className="mx-auto w-full max-w-7xl flex-1 px-6 py-10 lg:px-10">
         <div className="mb-6">
-          <p className="text-sm text-muted-foreground">OneHelp | Provider Portal</p>
+          <p className="text-sm text-muted-foreground">Resolv.lk | Provider Portal</p>
         </div>
         <ProviderDashboardClient />
       </section>

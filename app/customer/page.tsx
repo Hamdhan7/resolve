@@ -10,6 +10,7 @@ import { Mic, Send, ChevronLeft, ImagePlus, CircleUserRound, LogOut } from "luci
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import Link from "next/link";
+import { mockSendChatMessage } from "@/lib/mock-api";
 
 interface Message {
   id: string;
@@ -38,6 +39,7 @@ export default function CustomerPage() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [turnCount, setTurnCount] = useState(1);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Initial load
@@ -47,7 +49,7 @@ export default function CustomerPage() {
             {
                 id: "initial",
                 role: "assistant",
-                text: "Hi! I am the OneHelp Assistant. Please tell me about the issue you are facing today, so I can help route it to the correct provider.",
+                text: "Hi! I am the Resolv.lk Assistant. Please tell me about the issue you are facing today, so I can help route it to the correct provider.",
                 time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
             }
         ]);
@@ -67,16 +69,8 @@ export default function CustomerPage() {
         setIsLoading(true);
         
         try {
-            // Pointing directly to your Python FastAPI backend
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
-            const res = await fetch(`${apiUrl}/chat/message`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ session_id: sessionId, message: userMsg })
-            });
-            
-            if (!res.ok) throw new Error("API error");
-            const data = await res.json();
+            const data = await mockSendChatMessage(userMsg, turnCount);
+            setTurnCount(prev => prev + 1);
             
             const assistantMsg: Message = {
                id: Date.now().toString() + "_ai",
@@ -95,7 +89,7 @@ export default function CustomerPage() {
                 setMessages(prev => [...prev, {
                     id: Date.now().toString() + "_error_mock",
                     role: "assistant", 
-                    text: "[Mock] Backend not reachable. I recorded: " + userMsg,
+                    text: "[Error] Mock data failed.",
                     time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
                 }]);
                 setIsLoading(false);
@@ -112,37 +106,16 @@ export default function CustomerPage() {
         setMessages(prev => [...prev.map(m => m.id === messageId ? { ...m, ticketConfirmed: true } : m), verifyMsg]);
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
-            const payload = { vendor_id: ticketData.vendor_id || "00000000-0000-0000-0000-000000000000", issue_data: ticketData };
-            
-            const res = await fetch(`${apiUrl}/tickets`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            if (!res.ok) throw new Error("API error");
-            const data = await res.json();
-
+            await new Promise((resolve) => setTimeout(resolve, 1500));
             setMessages(prev => [...prev, {
                 id: Date.now().toString() + "_conf",
                 role: "assistant", 
-                text: `Done! Ticket #${data.id || "NET-404"} has been created successfully. A technical team has been alerted.`,
+                text: `Done! Ticket #NET-404 has been created successfully. A technical team has been alerted.`,
                 time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
             }]);
 
         } catch (err) {
              console.error("Ticket API Error:", err);
-            // Mock Ticket Creation Fallback
-             setTimeout(() => {
-                 setMessages(prev => [...prev, {
-                     id: Date.now().toString() + "_mock_conf",
-                     role: "assistant", 
-                     text: `[Mock] Ticket #NET-TEST created successfully.`,
-                     time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-                 }]);
-                 setIsLoading(false);
-             }, 800);
         } finally {
             setIsLoading(false);
         }
@@ -211,7 +184,7 @@ export default function CustomerPage() {
                            {messages.map((msg) => (
                                <div key={msg.id} className={`flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}>
                                    <div className={`flex items-center justify-between mb-1.5 w-full max-w-[460px] ${msg.role === "user" ? "pl-4" : ""}`}>
-                                       <span className="text-[11px] font-semibold text-slate-500">{msg.role === "user" ? "You" : "OneHelp Assistant"}</span>
+                                       <span className="text-[11px] font-semibold text-slate-500">{msg.role === "user" ? "You" : "Resolv.lk Assistant"}</span>
                                        <span className="text-[10px] text-slate-400 font-medium">{msg.time}</span>
                                    </div>
                                    <div className={`text-[14.5px] p-4 rounded-2xl max-w-[460px] leading-relaxed shadow-sm w-fit ${
@@ -257,7 +230,7 @@ export default function CustomerPage() {
                            {isLoading && (
                                <div className="flex flex-col items-start">
                                    <div className="flex items-center justify-between mb-1.5 w-full max-w-[420px]">
-                                       <span className="text-[11px] font-semibold text-slate-500">OneHelp Assistant</span>
+                                       <span className="text-[11px] font-semibold text-slate-500">Resolv.lk Assistant</span>
                                    </div>
                                    <div className="bg-white border border-slate-100 px-5 py-4 rounded-2xl rounded-tl-sm w-fit shadow-sm flex items-center gap-1.5">
                                       <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />

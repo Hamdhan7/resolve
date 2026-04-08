@@ -10,95 +10,103 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const MOCK_VENDORS: Vendor[] = [
     { id: 'v1-uuid', name: 'Dialog', code: 'DLG' },
-    { id: 'v2-uuid', name: 'SLT Mobitel', code: 'SLT' },
+    { id: 'v2-uuid', name: 'SLT Mobitel', code: 'SLTM' },
     { id: 'v3-uuid', name: 'Airtel', code: 'ATL' },
+    { id: 'v4-uuid', name: 'SLT Fibre', code: 'SLTF' },
 ];
 
 export const MOCK_CURRENT_USER: Profile = {
     id: 'user1-uuid',
-    email: 'shajanthan@example.com',
+    email: 'hamdhan@example.com',
     role: 'customer',
-    full_name: 'Yogeswaran Shajanthan',
+    full_name: 'Hamdhan',
     phone_number: '0771234567',
 };
 
 export const MOCK_VENDOR_USER: Profile = {
     id: 'agent1-uuid',
-    email: 'support@dialog.lk',
+    email: 'support@sltfibre.lk',
     role: 'vendor',
-    full_name: 'Dialog Support Team',
+    full_name: 'SLT Fibre Support Team',
     phone_number: '0112345678',
 };
 
 export const MOCK_TICKETS: Ticket[] = [
     {
         id: 'ticket-1',
-        ticket_no: 'TCK-001',
+        ticket_no: 'NET-404',
         customer_id: 'user1-uuid',
-        vendor_id: 'v1-uuid',
-        vendor_name: 'Dialog',
-        status: 'In Progress',
+        vendor_id: 'v4-uuid',
+        vendor_name: 'SLT Fibre',
+        status: 'Pending',
         issue_data: {
-            vendor: 'Dialog',
-            connection_number: '0771234567',
-            issue_summary: '4G Data connection dropping constantly since yesterday morning.',
+            vendor: 'SLT Fibre',
+            connection_number: '011-2558900',
+            issue_summary: 'Connectivity Loss',
             category: 'Network Issue'
         },
-        internal_notes: 'Checking tower logs in the Colombo area.',
+        internal_notes: 'Checking line status.',
         created_at: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
     },
     {
         id: 'ticket-2',
-        ticket_no: 'TCK-002',
+        ticket_no: 'NET-405',
         customer_id: 'user1-uuid',
-        vendor_id: 'v2-uuid',
-        vendor_name: 'SLT Mobitel',
-        status: 'Resolved',
+        vendor_id: 'v1-uuid',
+        vendor_name: 'Dialog',
+        status: 'Processing',
         issue_data: {
-            vendor: 'SLT Mobitel',
-            connection_number: '0112558900',
-            issue_summary: 'LOS light is blinking red on the Fibre router.',
-            category: 'Hardware/Physical Line'
+            vendor: 'Dialog',
+            connection_number: '0771234567',
+            issue_summary: 'Slow Speed',
+            category: 'Performance'
         },
-        internal_notes: 'Technician dispatched. Fiber cable was chewed by a squirrel. Replaced line.',
+        internal_notes: null,
         created_at: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
     },
     {
         id: 'ticket-3',
-        ticket_no: 'TCK-003',
-        customer_id: 'user2-uuid', // Different user
-        vendor_id: 'v1-uuid',
-        vendor_name: 'Dialog',
-        status: 'Open',
+        ticket_no: 'NET-406',
+        customer_id: 'user1-uuid',
+        vendor_id: 'v2-uuid',
+        vendor_name: 'SLT Mobitel',
+        status: 'Addressed',
         issue_data: {
-            vendor: 'Dialog',
-            connection_number: '0779876543',
-            issue_summary: 'Overcharged on the last monthly postpaid bill.',
-            category: 'Billing'
+            vendor: 'SLT Mobitel',
+            connection_number: '0711234567',
+            issue_summary: 'Cannot make calls',
+            category: 'Network Issue'
         },
         internal_notes: null,
-        created_at: new Date().toISOString(), // Today
-    }
+        created_at: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
+    },
 ];
+
+export const MOCK_ADMIN_APPROVALS = [
+    { id: 'appr-1', company: 'Hutch Telecommunications', status: 'Pending Verification', date: new Date().toISOString() },
+    { id: 'appr-2', company: 'Lanka Bell', status: 'Pending Verification', date: new Date().toISOString() },
+    { id: 'appr-3', company: 'FastNet Solutions', status: 'Pending Verification', date: new Date().toISOString() },
+];
+
 
 // --- MOCK API FUNCTIONS (To be replaced by actual fetch calls later) ---
 
 export const fetchUserTickets = async (userId: string): Promise<Ticket[]> => {
-    await delay(1000); // 1 second fake delay
-    return MOCK_TICKETS.filter((t) => t.customer_id === userId);
+    await delay(1000); 
+    return MOCK_TICKETS; 
 };
 
 export const fetchVendorTickets = async (vendorId: string): Promise<Ticket[]> => {
     await delay(1000);
-    return MOCK_TICKETS.filter((t) => t.vendor_id === vendorId);
+    return MOCK_TICKETS;
 };
 
 export const updateTicketStatus = async (ticketId: string, newStatus: string): Promise<Ticket> => {
     await delay(800);
-    const ticket = MOCK_TICKETS.find(t => t.id === ticketId);
+    const ticket = MOCK_TICKETS.find(t => t.ticket_no === ticketId || t.id === ticketId);
     if (!ticket) throw new Error("Ticket not found");
     // In a real app, this updates the DB. Here we just return a mutated mock object.
-    const allowed = ["Open", "In Progress", "Resolved"] as const;
+    const allowed = ["Pending", "Processing", "Addressed", "Declined"] as const;
     const nextStatus = (allowed.includes(newStatus as (typeof allowed)[number])
       ? (newStatus as (typeof allowed)[number])
       : ticket.status);
@@ -107,30 +115,40 @@ export const updateTicketStatus = async (ticketId: string, newStatus: string): P
 
 // Simulate the AI Chatbot response
 export const mockSendChatMessage = async (message: string, turnCount: number): Promise<ChatApiResponse> => {
-    await delay(1500); // AI usually takes a little longer to respond
+    await delay(1500); 
 
-    // Simulate the AI gathering data over a few messages
     if (turnCount === 1) {
         return {
-            reply: "I'm sorry to hear you're having trouble. Could you please tell me which service provider you are using (e.g., Dialog, SLT)?",
+            reply: "I'm sorry to hear that. To help you faster, which service provider are you using?",
             is_complete: false,
             ticket_draft: null
         };
     } else if (turnCount === 2) {
         return {
-            reply: "Thank you. And what is the phone number or account number associated with this connection?",
+            reply: "Could you please provide your connection telephone number?",
+            is_complete: false,
+            ticket_draft: null
+        };
+    } else if (turnCount === 3) {
+        return {
+            reply: "Thanks. Now, could you check your router and tell me if the 'LOS' light is blinking red?",
+            is_complete: false,
+            ticket_draft: null
+        };
+    } else if (turnCount === 4) {
+        return {
+            reply: "Got it. I will draft a ticket summary: \nSymptom: Total service outage\nHardware Indicator: LOS Blinking Red\nSuspected Fault: Physical Line Break.\nShall I proceed to create this ticket?",
             is_complete: false,
             ticket_draft: null
         };
     } else {
-        // On the 3rd turn, simulate completion
         return {
-            reply: "Thank you for the details. I have gathered all the necessary information. Please review the ticket details below. Should I submit this to your provider?",
+            reply: "Done! Ticket #NET-404 has been created successfully.",
             is_complete: true,
             ticket_draft: {
-                vendor: "Dialog",
-                connection_number: "077xxxxxxx",
-                issue_summary: message, // Uses the last thing they typed as the summary
+                vendor: "SLT Fibre",
+                connection_number: "011-2558900",
+                issue_summary: "Connectivity Loss via AI Diagnosis", 
                 category: "Technical Support"
             }
         };

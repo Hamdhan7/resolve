@@ -4,5 +4,5 @@ export type ISODateTimeString = string;
 
 export type Role = "customer" | "vendor";
 
-export type TicketStatus = "Open" | "In Progress" | "Resolved";
+export type TicketStatus = "Pending" | "Processing" | "Addressed" | "Declined";
 

@@ -15,17 +15,17 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "OneHelp",
-    template: "%s | OneHelp",
+    default: "Resolv.lk",
+    template: "%s | Resolv.lk",
   },
   description:
     "An AI powered complaint management system for better customer support.",
   openGraph: {
-    title: "OneHelp",
+    title: "Resolv.lk",
     description:
       "An AI powered complaint management system for better customer support.",
-    url: "https://onehelp.online",
-    siteName: "OneHelp",
+    url: "https://resolv.lk",
+    siteName: "Resolv.lk",
   },
   keywords: ["complaint management", "customer support", "AI powered"],
   robots: {

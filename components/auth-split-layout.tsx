@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -61,17 +60,12 @@ export default function AuthSplitLayout({
             <div className="absolute inset-10 rounded-[2rem] border border-border/40 bg-background/40 backdrop-blur-sm" />
             <div className="relative z-10 flex max-w-md flex-col items-center text-center">
               <div className="mb-8 rounded-3xl border border-border/60 bg-background/90 p-10 shadow-2xl shadow-primary/10">
-                <Image
-                  src="/brand/logo-mark.svg"
-                  alt="OneHelp"
-                  width={220}
-                  height={220}
-                  priority
-                  className="h-auto w-40"
-                />
+                <span className="text-5xl font-extrabold tracking-tighter text-foreground block w-40 text-center">
+                  Resolv<span className="text-primary">.lk</span>
+                </span>
               </div>
               <h2 className="text-3xl font-semibold tracking-tight text-foreground">
-                OneHelp support starts here
+                Resolv.lk support starts here
               </h2>
               <p className="mt-3 text-base leading-7 text-muted-foreground">
                 Access your account, manage requests, and stay connected with a clean,
