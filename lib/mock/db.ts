@@ -45,7 +45,7 @@ const tickets: Ticket[] = [
     ticket_no: "NET-404",
     customer_id: profiles[1]!.id,
     vendor_id: vendors[1]!.id,
-    status: "In Progress",
+    status: "Processing",
     issue_data: {
       vendor: "SLT Fibre",
       connection_number: "011-2558900",
@@ -62,7 +62,7 @@ const tickets: Ticket[] = [
     ticket_no: "NET-405",
     customer_id: profiles[2]!.id,
     vendor_id: vendors[1]!.id,
-    status: "Resolved",
+    status: "Addressed",
     issue_data: {
       vendor: "SLT Fibre",
       connection_number: "011-2000000",
@@ -79,7 +79,7 @@ const tickets: Ticket[] = [
     ticket_no: "NET-406",
     customer_id: profiles[2]!.id,
     vendor_id: vendors[2]!.id,
-    status: "Resolved",
+    status: "Addressed",
     issue_data: {
       vendor: "Mobitel",
       connection_number: "077-5551234",
@@ -96,7 +96,7 @@ const tickets: Ticket[] = [
     ticket_no: "NET-407",
     customer_id: profiles[1]!.id,
     vendor_id: vendors[0]!.id,
-    status: "Open",
+    status: "Pending",
     issue_data: {
       vendor: "Dialog",
       connection_number: "077-2229876",
@@ -227,7 +227,7 @@ export function createTicket(payload: {
     ticket_no: `NET-${Math.floor(100 + Math.random() * 900)}`,
     customer_id: customerId,
     vendor_id: payload.vendor_id,
-    status: "Open",
+    status: "Pending",
     issue_data: payload.issue_data,
     internal_notes: null,
     created_at: nowIso(),
